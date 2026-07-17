@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>Inspección PDFs</title>
+<style>body{background:#111;margin:0;padding:14px;font:12px monospace;color:#9f9;display:flex;flex-wrap:wrap;gap:10px}figure{margin:0}figcaption{padding:2px 0}canvas{display:block;width:230px;background:#fff}</style>
+</head>
+<body>
+<div id="st" style="width:100%">cargando…</div>
+<script type="module">
+import * as pdfjs from 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.min.mjs';
+pdfjs.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs';
+const st = document.getElementById('st');
+try {
+  for (const name of ['Prueba Carta', 'Prueba Legal']) {
+    const doc = await pdfjs.getDocument('../uploads/' + name + '.pdf').promise;
+    for (let i = 1; i <= doc.numPages; i++) {
+      const page = await doc.getPage(i);
+      const vp0 = page.getViewport({ scale: 1 });
+      const vp = page.getViewport({ scale: 460 / vp0.width });
+      const fig = document.createElement('figure');
+      const cap = document.createElement('figcaption');
+      cap.textContent = name + ' p' + i;
+      const c = document.createElement('canvas');
+      c.width = Math.round(vp.width); c.height = Math.round(vp.height);
+      fig.appendChild(cap); fig.appendChild(c);
+      document.body.appendChild(fig);
+      await page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
+    }
+  }
+  st.textContent = 'LISTO';
+} catch (e) { st.textContent = 'ERROR: ' + e.message; }
+</script>
+</body>
+</html>

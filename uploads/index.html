@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+  html{scroll-behavior:smooth;scrollbar-width:none;-ms-overflow-style:none}
+  ::-webkit-scrollbar{width:0;height:0;display:none}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:'Manrope',system-ui,sans-serif;-webkit-font-smoothing:antialiased;
+    --bg:#faf9fb;--bg2:#f4f1f9;--card:#ffffff;--glass:rgba(255,255,255,.68);--text:#191722;--text2:#615b73;--line:rgba(25,23,34,.09);
+    --acc:#8b5cf6;--accInk:#6d3ee8;
+    --accSoft:color-mix(in srgb, var(--acc) 9%, transparent);
+    --glow:color-mix(in srgb, var(--acc) 17%, transparent);
+    --shadow:0 20px 55px -22px rgba(35,20,80,.20);
+    transition:background-color .6s ease,color .6s ease}
+  body.dark{--bg:#0f0e15;--bg2:#151320;--card:#1a1726;--glass:rgba(21,18,32,.62);--text:#f0eef6;--text2:#9d97b0;--line:rgba(240,238,246,.10);
+    --acc:#a78bfa;--accInk:#c4b5fd;--shadow:0 20px 55px -22px rgba(0,0,0,.6)}
+  ::selection{background:var(--acc);color:#fff}
+  body::after{content:"";position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.028;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>")}
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  @keyframes rippleFx{from{transform:scale(0);opacity:.32}to{transform:scale(2.8);opacity:0}}
+  @keyframes mIn{from{opacity:0;transform:translateY(22px) scale(.965)}to{opacity:1;transform:none}}
+  @keyframes mOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(14px) scale(.975)}}
+  @keyframes gIn{from{opacity:0;transform:scale(.92);filter:blur(14px)}to{opacity:1;transform:scale(1);filter:blur(0)}}
+  @keyframes firmaSweep{from{-webkit-mask-position:120% 0;mask-position:120% 0}to{-webkit-mask-position:0% 0;mask-position:0% 0}}
+  @keyframes preOut{to{opacity:0;filter:blur(12px);transform:scale(1.06);visibility:hidden}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px);filter:blur(6px)}to{opacity:1;transform:none;filter:blur(0)}}
+  @keyframes briefIn{from{opacity:0;transform:translateY(14px);filter:blur(5px)}to{opacity:1;transform:none;filter:blur(0)}}
+  @keyframes toastIn{from{opacity:0;transform:translateY(14px);filter:blur(5px)}to{opacity:1;transform:none;filter:blur(0)}}
+  @keyframes toastOut{from{opacity:1;transform:none;filter:blur(0)}to{opacity:0;transform:translateY(-10px) scale(.94);filter:blur(6px)}}
+  @keyframes holdPulse{0%{transform:scale(1);box-shadow:0 0 0 0 var(--glow)}70%{transform:scale(1.3);box-shadow:0 0 0 12px var(--glow)}100%{transform:scale(1.45);box-shadow:0 0 0 18px transparent}}
+  @keyframes letraIn{0%{opacity:0;filter:blur(12px);transform:translateY(12px) rotate(3deg) scale(1.18)}55%{opacity:1;filter:blur(0) drop-shadow(0 0 16px var(--glow));transform:translateY(-2px) rotate(-.5deg) scale(1.02)}100%{opacity:1;filter:blur(0);transform:none}}
+  @keyframes trazo{from{transform:scaleX(0);opacity:0}to{transform:scaleX(1);opacity:1}}
+  @keyframes pageIn{from{opacity:.35;transform:scale(1.06);filter:blur(14px) brightness(1.28)}to{opacity:1;transform:scale(1);filter:blur(0) brightness(1)}}
+  @keyframes pageInSoft{from{opacity:.3}to{opacity:1}}
+  @keyframes pageRipple{from{transform:scale(.15);opacity:.85}to{transform:scale(1);opacity:0}}
+  @keyframes shimmer{from{background-position:200% 0}to{background-position:-200% 0}}
+  [data-modal-scroll]::-webkit-scrollbar{display:none}
+  @keyframes bIn{from{opacity:0}to{opacity:1}}
+  @keyframes bOut{from{opacity:1}to{opacity:0}}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation-duration:.01ms !important;animation-delay:0ms !important;transition-duration:.01ms !important}
+  }
+</style>
+</helmet>
+
+<div style="min-height:100vh;overflow-x:clip;font-family:'Manrope',system-ui,sans-serif;animation:pageInSoft 1.15s cubic-bezier(.2,.75,.2,1) 4.15s">
+
+  <!-- ============ PRELOADER (FIRMA ANIMADA) ============ -->
+    <div data-preloader aria-hidden="true" style="position:fixed;inset:0;z-index:400;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:var(--bg)">
+      <p aria-label="Geraldine Olivar" style="margin:0;padding:0 20px;font-family:'Great Vibes',cursive;font-size:clamp(46px,9vw,80px);line-height:1.25;color:var(--accInk);display:flex;align-items:baseline">
+        <sc-for list="{{ preLetras }}" as="l" hint-placeholder-count="0">
+          <span style="display:inline-block;white-space:pre;opacity:{{ l.op }};filter:{{ l.fil }};transform:{{ l.tf }};transition:opacity .7s ease,filter .7s ease,transform .7s cubic-bezier(.2,.75,.2,1)">{{ l.ch }}</span>
+        </sc-for>
+      </p>
+      <span aria-hidden="true" style="width:min(280px,56vw);height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--acc),transparent);transform-origin:left;opacity:{{ preTrazoOp }};transform:{{ preTrazoTf }};transition:opacity .9s ease,transform .9s cubic-bezier(.2,.75,.2,1)"></span>
+      <p style="margin:0;font-size:11px;font-weight:800;letter-spacing:.34em;text-transform:uppercase;color:var(--text2);opacity:{{ preSubOp }};transform:{{ preSubTf }};transition:opacity .8s ease,transform .8s ease">Diseño de interiores</p>
+    </div>
+
+  <!-- ============ HERO ============ -->
+  <header id="inicio" data-sec="inicio" data-screen-label="Hero" style="position:relative;width:100%;height:clamp(380px,50vh,580px);animation:pageIn 1.15s cubic-bezier(.2,.75,.2,1) 4.15s">
+    <img src="assets/images/hero.png" alt="Interior residencial cálido con iluminación de diseño" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+    <div data-video-holder style="position:absolute;inset:0"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(92deg, rgba(12,9,20,.62) 0%, rgba(12,9,20,.28) 45%, rgba(12,9,20,0) 72%)"></div>
+    <div style="position:absolute;left:0;right:0;top:0;height:24%;background:linear-gradient(to bottom, var(--bg), transparent);transition:background .6s ease"></div>
+    <div style="position:absolute;left:0;right:0;bottom:0;height:36%;background:linear-gradient(to top, var(--bg), transparent);transition:background .6s ease"></div>
+    <div style="position:relative;z-index:4;max-width:1180px;margin:0 auto;padding:0 clamp(18px,4vw,32px);height:100%;display:flex;flex-direction:column;justify-content:center;gap:18px">
+      <h1 style="margin:0;font-size:clamp(34px,5.2vw,58px);line-height:1.07;font-weight:800;letter-spacing:-0.02em;color:#ffffff;text-wrap:balance;animation:fadeUp .9s cubic-bezier(.2,.75,.2,1) 4.45s both">
+        Diseño espacios.<br>
+        <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#cdb6ff;position:relative;display:inline-block">
+          <span style="visibility:hidden">Creo experiencias.</span>
+          <sc-for list="{{ heroWords }}" as="w" hint-placeholder-count="0">
+            <span style="position:absolute;left:0;top:0;white-space:nowrap;opacity:{{ w.op }};filter:{{ w.fil }};transform:translateY({{ w.ty }});transition:opacity .9s ease,filter .9s ease,transform .9s ease">{{ w.t }}</span>
+          </sc-for>
+        </em>
+      </h1>
+      <p style="margin:0;max-width:420px;font-size:clamp(14px,1.4vw,16.5px);line-height:1.65;color:rgba(255,255,255,.82);animation:fadeUp .9s cubic-bezier(.2,.75,.2,1) 4.6s both">Transformo ideas en espacios funcionales, estéticos y llenos de vida.</p>
+      <div style="display:flex;gap:12px;margin-top:6px;animation:fadeUp .9s cubic-bezier(.2,.75,.2,1) 4.75s both">
+        <a href="#proyectos" data-glow data-ripple data-magnetic style="position:relative;display:inline-flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#fff;font-size:14px;font-weight:700;text-decoration:none;transition:background .35s,transform .35s" style-hover="background:rgba(255,255,255,.24)">
+          <span style="display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:999px;background:#ffffff;color:#191722;flex:none">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"></path></svg>
+          </span>
+          Ver reel de proyectos
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ FLOATING NAV ============ -->
+  <div data-nav-wrap style="position:sticky;top:14px;z-index:100;display:flex;justify-content:center;padding:0 14px;margin-top:-30px;transition:transform .5s cubic-bezier(.2,.75,.2,1),opacity .4s ease">
+    <nav aria-label="Navegación principal" style="display:flex;align-items:center;gap:2px;padding:7px;border-radius:999px;background:var(--glass);backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);border:1px solid var(--line);box-shadow:var(--shadow);max-width:100%;transition:background .6s ease,border-color .6s ease">
+      <div data-navscroll style="display:flex;align-items:center;gap:2px;min-width:0;overflow-x:auto;scrollbar-width:none">
+      <a href="#inicio" data-nav="inicio" data-ripple style="flex:none;position:relative;padding:9px 15px;border-radius:999px;font-size:13.5px;font-weight:600;color:var(--text2);text-decoration:none;white-space:nowrap;transition:color .3s,background .3s" style-hover="color:var(--text)">Inicio<span data-underline style="position:absolute;left:15px;right:15px;bottom:4px;height:2px;border-radius:2px;background:var(--acc);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.2,.75,.2,1)"></span></a>
+      <a href="#sobre-mi" data-nav="sobre-mi" data-ripple style="flex:none;position:relative;padding:9px 15px;border-radius:999px;font-size:13.5px;font-weight:600;color:var(--text2);text-decoration:none;white-space:nowrap;transition:color .3s,background .3s" style-hover="color:var(--text)">Sobre mí<span data-underline style="position:absolute;left:15px;right:15px;bottom:4px;height:2px;border-radius:2px;background:var(--acc);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.2,.75,.2,1)"></span></a>
+      <a href="#proyectos" data-nav="proyectos" data-ripple style="flex:none;position:relative;padding:9px 15px;border-radius:999px;font-size:13.5px;font-weight:600;color:var(--text2);text-decoration:none;white-space:nowrap;transition:color .3s,background .3s" style-hover="color:var(--text)">Proyectos<span data-underline style="position:absolute;left:15px;right:15px;bottom:4px;height:2px;border-radius:2px;background:var(--acc);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.2,.75,.2,1)"></span></a>
+      <a href="#habilidades" data-nav="habilidades" data-ripple style="flex:none;position:relative;padding:9px 15px;border-radius:999px;font-size:13.5px;font-weight:600;color:var(--text2);text-decoration:none;white-space:nowrap;transition:color .3s,background .3s" style-hover="color:var(--text)">Habilidades<span data-underline style="position:absolute;left:15px;right:15px;bottom:4px;height:2px;border-radius:2px;background:var(--acc);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.2,.75,.2,1)"></span></a>
+      <a href="#experiencia" data-nav="experiencia" data-ripple style="flex:none;position:relative;padding:9px 15px;border-radius:999px;font-size:13.5px;font-weight:600;color:var(--text2);text-decoration:none;white-space:nowrap;transition:color .3s,background .3s" style-hover="color:var(--text)">Experiencia<span data-underline style="position:absolute;left:15px;right:15px;bottom:4px;height:2px;border-radius:2px;background:var(--acc);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.2,.75,.2,1)"></span></a>
+      <a href="#contacto" data-nav="contacto" data-ripple style="flex:none;position:relative;padding:9px 15px;border-radius:999px;font-size:13.5px;font-weight:600;color:var(--text2);text-decoration:none;white-space:nowrap;transition:color .3s,background .3s" style-hover="color:var(--text)">Contacto<span data-underline style="position:absolute;left:15px;right:15px;bottom:4px;height:2px;border-radius:2px;background:var(--acc);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.2,.75,.2,1)"></span></a>
+      </div>
+      <button type="button" onClick="{{ toggleTheme }}" data-theme-btn data-ripple aria-label="Cambiar tema" title="Mantén presionado 2 s: modo linterna" style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;margin-left:4px;border-radius:999px;border:1px solid var(--line);background:var(--accSoft);color:var(--accInk);cursor:pointer;flex:none;-webkit-user-select:none;user-select:none;touch-action:manipulation;transition:transform .4s,background .3s,color .6s" style-hover="transform:rotate(18deg)">
+        <sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"></path></svg>
+        </sc-if>
+        <sc-if value="{{ isLight }}" hint-placeholder-val="{{ true }}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg>
+        </sc-if>
+      </button>
+      <sc-if value="{{ musicAvailable }}" hint-placeholder-val="{{ false }}">
+      <button type="button" onClick="{{ toggleMusic }}" data-music-btn data-ripple aria-label="{{ musicAria }}" title="Mantén presionado 1 s: opciones de sonido" style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;margin-left:2px;border-radius:999px;border:1px solid var(--line);background:{{ musicBg }};color:{{ musicColor }};cursor:pointer;flex:none;-webkit-user-select:none;user-select:none;touch-action:manipulation;transition:transform .4s,background .3s,color .3s" style-hover="transform:scale(1.1)">
+        <sc-if value="{{ musicOn }}" hint-placeholder-val="{{ false }}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V6l11-2v12"></path><circle cx="6.5" cy="18" r="2.5"></circle><circle cx="17.5" cy="16" r="2.5"></circle></svg>
+        </sc-if>
+        <sc-if value="{{ musicOff }}" hint-placeholder-val="{{ true }}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V6l11-2v12"></path><circle cx="6.5" cy="18" r="2.5"></circle><circle cx="17.5" cy="16" r="2.5"></circle><path d="M3 3l18 18"></path></svg>
+        </sc-if>
+      </button>
+      </sc-if>
+    </nav>
+    <sc-if value="{{ sndPanelOpen }}" hint-placeholder-val="{{ false }}">
+      <div data-snd-panel role="dialog" aria-label="Opciones de sonido" style="position:absolute;top:calc(100% + 10px);right:14px;z-index:120;display:flex;flex-direction:column;gap:12px;padding:16px;min-width:238px;border-radius:20px;background:var(--glass);backdrop-filter:blur(22px) saturate(1.5);-webkit-backdrop-filter:blur(22px) saturate(1.5);border:1px solid var(--line);box-shadow:var(--shadow);animation:briefIn .35s cubic-bezier(.2,.75,.25,1)">
+        <p style="margin:0;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text2)">Estilo de sonidos</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+          <button type="button" data-estilo="galaxia" onClick="{{ setSndStyle }}" aria-label="Estilo Galaxia" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 6px;border-radius:14px;border:1.5px solid {{ sndGalaxiaBorde }};background:{{ sndGalaxiaBg }};color:var(--text);cursor:pointer;transition:transform .3s,border-color .3s,background .3s" style-hover="transform:translateY(-2px)">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accInk)" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l2.6 6.2 6.4.5-4.9 4.3 1.5 6.5-5.6-3.5-5.6 3.5 1.5-6.5L3 9.2l6.4-.5z"></path></svg>
+            <span style="font-size:11px;font-weight:700">Galaxia</span>
+          </button>
+          <button type="button" data-estilo="lunar" onClick="{{ setSndStyle }}" aria-label="Estilo Lunar" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 6px;border-radius:14px;border:1.5px solid {{ sndLunarBorde }};background:{{ sndLunarBg }};color:var(--text);cursor:pointer;transition:transform .3s,border-color .3s,background .3s" style-hover="transform:translateY(-2px)">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="var(--accInk)" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg>
+            <span style="font-size:11px;font-weight:700">Lunar</span>
+          </button>
+          <button type="button" data-estilo="zelda" onClick="{{ setSndStyle }}" aria-label="Estilo Heroico" style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 6px;border-radius:14px;border:1.5px solid {{ sndZeldaBorde }};background:{{ sndZeldaBg }};color:var(--text);cursor:pointer;transition:transform .3s,border-color .3s,background .3s" style-hover="transform:translateY(-2px)">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="var(--accInk)" aria-hidden="true"><path d="M12 2l5 9h-10z"></path><path d="M7 12l5 9-10 0z" opacity=".65"></path><path d="M17 12l5 9-10 0z" opacity=".65"></path></svg>
+            <span style="font-size:11px;font-weight:700">Heroico</span>
+          </button>
+        </div>
+        <div style="height:1px;background:var(--line)"></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:2px 2px 4px">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accInk)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M11 5 6 9H2v6h4l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path></svg>
+          <input type="range" min="0" max="1" step="0.01" value="{{ vol }}" onInput="{{ onVol }}" aria-label="Volumen de la música ambiental" style="flex:1;height:4px;accent-color:var(--acc);cursor:pointer">
+          <span style="font-size:11px;font-weight:800;color:var(--text2);min-width:32px;text-align:right">{{ volPct }}</span>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button type="button" onClick="{{ togglePlay }}" aria-label="{{ playAria }}" title="{{ playAria }}" style="flex:none;display:flex;align-items:center;justify-content:center;width:40px;border-radius:12px;border:1px solid var(--line);background:var(--accSoft);color:var(--accInk);cursor:pointer;transition:transform .3s,background .3s" style-hover="transform:translateY(-2px)">
+            <sc-if value="{{ playing }}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg></sc-if>
+            <sc-if value="{{ musicOff }}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5.5v13l11-6.5z"></path></svg></sc-if>
+          </button>
+          <button type="button" onClick="{{ nextSong }}" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 8px;border-radius:12px;border:1px solid var(--line);background:var(--accSoft);color:var(--accInk);font-size:12px;font-weight:700;cursor:pointer;transition:transform .3s,background .3s" style-hover="transform:translateY(-2px)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 5.5v13l9-6.5z"></path><rect x="16" y="5.5" width="2.6" height="13" rx="1"></rect></svg>
+            Siguiente canción
+          </button>
+          <button type="button" onClick="{{ toggleSounds }}" aria-label="{{ soundsAria }}" title="{{ soundsAria }}" style="flex:none;display:flex;align-items:center;justify-content:center;width:40px;border-radius:12px;border:1px solid var(--line);background:{{ soundsBg }};color:var(--accInk);cursor:pointer;transition:transform .3s,background .3s" style-hover="transform:translateY(-2px)">
+            <sc-if value="{{ soundsOnV }}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.2 5.6L20 11l-5.8 2.4L12 19l-2.2-5.6L4 11l5.8-2.4z"></path></svg></sc-if>
+            <sc-if value="{{ soundsOffV }}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.2 5.6L20 11l-5.8 2.4L12 19l-2.2-5.6L4 11l5.8-2.4z"></path><path d="M3 3l18 18"></path></svg></sc-if>
+          </button>
+        </div>
+        <p style="margin:0;font-size:10.5px;line-height:1.5;color:var(--text2)">El ícono de música solo silencia la música ambiental; el destello, los sonidos interactivos.</p>
+      </div>
+    </sc-if>
+  </div>
+
+  <!-- ============ SOBRE MÍ ============ -->
+  <section id="sobre-mi" data-sec="sobre-mi" data-screen-label="Sobre mí" style="scroll-margin-top:96px;max-width:1180px;margin:0 auto;padding:clamp(48px,7vw,84px) clamp(18px,4vw,32px) clamp(30px,4vw,50px)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:clamp(18px,2.5vw,28px);align-items:stretch">
+
+      <div data-reveal data-glow style="position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:26px;padding:clamp(26px,3vw,38px);display:flex;flex-direction:column;gap:16px;transition:background .6s ease,border-color .6s ease">
+        <div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div>
+        <span style="display:inline-flex;width:38px;height:38px;align-items:center;justify-content:center;border-radius:12px;background:var(--accSoft);color:var(--accInk)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"></path></svg>
+        </span>
+        <h2 style="margin:0;font-size:clamp(22px,2.4vw,27px);font-weight:800;letter-spacing:-0.01em">¿Quién soy?</h2>
+        <p style="margin:0;font-size:14.5px;line-height:1.75;color:var(--text2)">Soy decoradora de espacios interiores, egresada del SENA. Me caracterizo por ser creativa, empática, innovadora, responsable y observadora.</p>
+        <p style="margin:0;font-size:14.5px;line-height:1.75;color:var(--text2)">Me apasiona crear espacios funcionales y estéticos que generen experiencias únicas, aportando confort, armonía y bienestar.</p>
+        <a href="#contacto" data-glow data-ripple style="position:relative;margin-top:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:9px;padding:11px 18px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--text);font-size:13.5px;font-weight:700;text-decoration:none;transition:background .3s,border-color .3s,gap .3s" style-hover="background:var(--accSoft);border-color:var(--acc);gap:13px">Conocer más sobre mí
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+        </a>
+      </div>
+
+      <div data-reveal style="display:flex;align-items:center;justify-content:center">
+        <div style="width:100%;max-width:380px;animation:floaty 7s ease-in-out infinite">
+          <div onClick="{{ nextBio }}" role="button" tabindex="0" aria-label="Siguiente foto" style="position:relative;width:100%;aspect-ratio:3/4.2;border-radius:26px;overflow:hidden;box-shadow:var(--shadow);cursor:pointer;transition:transform .6s cubic-bezier(.2,.75,.2,1)" style-hover="transform:scale(1.02) rotate(.4deg)">
+            <img src="assets/images/bio/bio-1.jpg" alt="Retrato de Geraldine Olivar, diseñadora de interiores" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:{{ b1.op }};filter:{{ b1.fil }};transform:scale({{ b1.esc }});transition:opacity 1.1s ease,filter 1.1s ease,transform 5.5s ease">
+            <img src="assets/images/bio/bio-2.jpg" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:{{ b2.op }};filter:{{ b2.fil }};transform:scale({{ b2.esc }});transition:opacity 1.1s ease,filter 1.1s ease,transform 5.5s ease">
+            <img src="assets/images/bio/bio-3.jpg" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:{{ b3.op }};filter:{{ b3.fil }};transform:scale({{ b3.esc }});transition:opacity 1.1s ease,filter 1.1s ease,transform 5.5s ease">
+            <img src="assets/images/bio/bio-4.jpg" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:{{ b4.op }};filter:{{ b4.fil }};transform:scale({{ b4.esc }});transition:opacity 1.1s ease,filter 1.1s ease,transform 5.5s ease">
+            <img src="assets/images/bio/bio-5.jpg" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:{{ b5.op }};filter:{{ b5.fil }};transform:scale({{ b5.esc }});transition:opacity 1.1s ease,filter 1.1s ease,transform 5.5s ease">
+            <div style="position:absolute;inset:0;background:radial-gradient(130% 90% at 25% 0%, rgba(255,255,255,.16), transparent 55%);pointer-events:none;mix-blend-mode:soft-light"></div>
+            <div style="position:absolute;left:0;right:0;bottom:12px;display:flex;justify-content:center;gap:6px">
+              <sc-for list="{{ bioFotos }}" as="f" hint-placeholder-count="0">
+                <span style="width:6px;height:6px;border-radius:99px;background:rgba(255,255,255,{{ f.dotOp }});box-shadow:0 1px 4px rgba(0,0,0,.35);transition:background .5s"></span>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div data-reveal data-glow style="position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:26px;padding:clamp(26px,3vw,38px);display:flex;flex-direction:column;gap:18px;transition:background .6s ease,border-color .6s ease">
+        <div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div>
+        <span style="display:inline-flex;width:38px;height:38px;align-items:center;justify-content:center;border-radius:12px;background:var(--accSoft);color:var(--accInk)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.2 5.6L20 11l-5.8 2.4L12 19l-2.2-5.6L4 11l5.8-2.4z"></path></svg>
+        </span>
+        <h2 style="margin:0;font-size:clamp(22px,2.4vw,27px);font-weight:800;letter-spacing:-0.01em">Mi forma de trabajar</h2>
+        <div style="display:flex;flex-direction:column;gap:15px">
+          <div style="display:flex;gap:13px;align-items:flex-start"><span style="flex:none;width:27px;height:27px;display:flex;align-items:center;justify-content:center;border-radius:999px;background:var(--accSoft);color:var(--accInk);font-size:11.5px;font-weight:800">01</span><p style="margin:2px 0 0;font-size:14px;line-height:1.6;color:var(--text2)">Escucho tus necesidades y comprendo tu visión.</p></div>
+          <div style="display:flex;gap:13px;align-items:flex-start"><span style="flex:none;width:27px;height:27px;display:flex;align-items:center;justify-content:center;border-radius:999px;background:var(--accSoft);color:var(--accInk);font-size:11.5px;font-weight:800">02</span><p style="margin:2px 0 0;font-size:14px;line-height:1.6;color:var(--text2)">Diseño soluciones creativas y funcionales.</p></div>
+          <div style="display:flex;gap:13px;align-items:flex-start"><span style="flex:none;width:27px;height:27px;display:flex;align-items:center;justify-content:center;border-radius:999px;background:var(--accSoft);color:var(--accInk);font-size:11.5px;font-weight:800">03</span><p style="margin:2px 0 0;font-size:14px;line-height:1.6;color:var(--text2)">Selecciono materiales, colores y mobiliario con intención.</p></div>
+          <div style="display:flex;gap:13px;align-items:flex-start"><span style="flex:none;width:27px;height:27px;display:flex;align-items:center;justify-content:center;border-radius:999px;background:var(--accSoft);color:var(--accInk);font-size:11.5px;font-weight:800">04</span><p style="margin:2px 0 0;font-size:14px;line-height:1.6;color:var(--text2)">Visualizo tu proyecto en 3D para que lo vivas antes de construirlo.</p></div>
+          <div style="display:flex;gap:13px;align-items:flex-start"><span style="flex:none;width:27px;height:27px;display:flex;align-items:center;justify-content:center;border-radius:999px;background:var(--accSoft);color:var(--accInk);font-size:11.5px;font-weight:800">05</span><p style="margin:2px 0 0;font-size:14px;line-height:1.6;color:var(--text2)">Acompaño cada detalle hasta hacer realidad el espacio ideal.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROYECTOS ============ -->
+  <section id="proyectos" data-sec="proyectos" data-screen-label="Proyectos" style="scroll-margin-top:96px;max-width:1180px;margin:0 auto;padding:clamp(40px,6vw,70px) clamp(18px,4vw,32px)">
+    <div data-reveal style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:30px">
+      <div>
+        <p style="margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:linear-gradient(90deg,var(--accInk) 30%,color-mix(in srgb,var(--accInk) 45%,#ffffff) 50%,var(--accInk) 70%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 8s linear infinite">Mi trabajo</p>
+        <h2 style="margin:0;font-size:clamp(28px,3.6vw,40px);font-weight:800;letter-spacing:-0.02em">Proyectos <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;padding:0 .16em .12em .06em;margin:0 -.16em -.12em -.06em;background:linear-gradient(90deg,var(--accInk) 30%,color-mix(in srgb,var(--accInk) 40%,#ffffff) 50%,var(--accInk) 70%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 7s linear infinite">destacados</em></h2>
+        <p style="margin:12px 0 0;max-width:520px;font-size:14.5px;line-height:1.65;color:var(--text2)">Cada proyecto cuenta una historia; descubre cómo diseño espacios que inspiran.</p>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:clamp(16px,2vw,22px)">
+
+      <article data-glow data-ripple data-idx="1" onClick="{{ openProj }}" onKeyDown="{{ keyOpenProj }}" role="button" tabindex="0" aria-label="Ver proyecto Cocina Residencial" style="position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:22px;cursor:pointer;transition:transform .5s cubic-bezier(.2,.75,.2,1),box-shadow .5s,border-color .4s,background .6s ease" style-hover="transform:translateY(-7px);box-shadow:var(--shadow);border-color:var(--acc)" style-focus="outline:2px solid var(--acc);outline-offset:3px">
+        <div style="position:relative;overflow:hidden">
+          <img src="assets/images/galeria/cocina-1.jpg" alt="Cocina residencial contemporánea" loading="lazy" style="display:block;width:100%;aspect-ratio:4/3.3;object-fit:cover">
+          <span style="position:absolute;left:12px;bottom:12px;padding:5px 11px;border-radius:999px;background:rgba(14,11,22,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em">Residencial</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 17px">
+          <div>
+            <h3 style="margin:0;font-size:15.5px;font-weight:800;letter-spacing:-0.01em">Cocina Residencial</h3>
+            <p style="margin:4px 0 0;font-size:12.5px;color:var(--text2)">Diseño integral de cocina</p>
+          </div>
+          <span data-glow style="position:relative;flex:none;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:999px;border:1px solid var(--line);color:var(--accInk);background:var(--accSoft);transition:transform .4s">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+          </span>
+        </div>
+        <div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div>
+      </article>
+
+      <article data-glow data-ripple data-idx="0" onClick="{{ openProj }}" onKeyDown="{{ keyOpenProj }}" role="button" tabindex="0" aria-label="Ver proyecto R.E.M. Beauty" style="position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:22px;cursor:pointer;transition:transform .5s cubic-bezier(.2,.75,.2,1),box-shadow .5s,border-color .4s,background .6s ease" style-hover="transform:translateY(-7px);box-shadow:var(--shadow);border-color:var(--acc)" style-focus="outline:2px solid var(--acc);outline-offset:3px">
+        <div style="position:relative;overflow:hidden">
+          <img src="assets/images/galeria/rem-1.jpg" alt="Tienda R.E.M. Beauty, diseño de local comercial" loading="lazy" style="display:block;width:100%;aspect-ratio:4/3.3;object-fit:cover">
+          <span style="position:absolute;left:12px;bottom:12px;padding:5px 11px;border-radius:999px;background:rgba(14,11,22,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em">Comercial</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 17px">
+          <div>
+            <h3 style="margin:0;font-size:15.5px;font-weight:800;letter-spacing:-0.01em">R.E.M. Beauty</h3>
+            <p style="margin:4px 0 0;font-size:12.5px;color:var(--text2)">Diseño de local comercial</p>
+          </div>
+          <span data-glow style="position:relative;flex:none;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:999px;border:1px solid var(--line);color:var(--accInk);background:var(--accSoft);transition:transform .4s">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+          </span>
+        </div>
+        <div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div>
+      </article>
+
+      <article data-glow data-ripple data-idx="2" onClick="{{ openProj }}" onKeyDown="{{ keyOpenProj }}" role="button" tabindex="0" aria-label="Ver proyecto Ambientación Comercial Tugó" style="position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:22px;cursor:pointer;transition:transform .5s cubic-bezier(.2,.75,.2,1),box-shadow .5s,border-color .4s,background .6s ease" style-hover="transform:translateY(-7px);box-shadow:var(--shadow);border-color:var(--acc)" style-focus="outline:2px solid var(--acc);outline-offset:3px">
+        <div style="position:relative;overflow:hidden">
+          <img src="assets/images/galeria/tugo-1.jpg" alt="Ambientación comercial en Tugó" loading="lazy" style="display:block;width:100%;aspect-ratio:4/3.3;object-fit:cover">
+          <span style="position:absolute;left:12px;bottom:12px;padding:5px 11px;border-radius:999px;background:rgba(14,11,22,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em">Comercial</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 17px">
+          <div>
+            <h3 style="margin:0;font-size:15.5px;font-weight:800;letter-spacing:-0.01em">Ambientación Comercial</h3>
+            <p style="margin:4px 0 0;font-size:12.5px;color:var(--text2)">Tugó</p>
+          </div>
+          <span data-glow style="position:relative;flex:none;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:999px;border:1px solid var(--line);color:var(--accInk);background:var(--accSoft);transition:transform .4s">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+          </span>
+        </div>
+        <div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div>
+      </article>
+
+      <article data-glow data-ripple data-idx="3" onClick="{{ openProj }}" onKeyDown="{{ keyOpenProj }}" role="button" tabindex="0" aria-label="Ver proyectos independientes de diseño interior" style="position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:22px;cursor:pointer;transition:transform .5s cubic-bezier(.2,.75,.2,1),box-shadow .5s,border-color .4s,background .6s ease" style-hover="transform:translateY(-7px);box-shadow:var(--shadow);border-color:var(--acc)" style-focus="outline:2px solid var(--acc);outline-offset:3px">
+        <div style="position:relative;overflow:hidden">
+          <img src="assets/images/galeria/apartamento-1.jpg" alt="Sala residencial de proyecto independiente" loading="lazy" style="display:block;width:100%;aspect-ratio:4/3.3;object-fit:cover">
+          <span style="position:absolute;left:12px;bottom:12px;padding:5px 11px;border-radius:999px;background:rgba(14,11,22,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em">Residencial</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 17px">
+          <div>
+            <h3 style="margin:0;font-size:15.5px;font-weight:800;letter-spacing:-0.01em">Proyectos Independientes</h3>
+            <p style="margin:4px 0 0;font-size:12.5px;color:var(--text2)">Diseño interior</p>
+          </div>
+          <span data-glow style="position:relative;flex:none;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:999px;border:1px solid var(--line);color:var(--accInk);background:var(--accSoft);transition:transform .4s">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+          </span>
+        </div>
+        <div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ HABILIDADES ============ -->
+  <section id="habilidades" data-sec="habilidades" data-screen-label="Habilidades" style="scroll-margin-top:96px;max-width:1180px;margin:0 auto;padding:clamp(40px,6vw,70px) clamp(18px,4vw,32px)">
+    <div data-reveal>
+      <p style="margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:linear-gradient(90deg,var(--accInk) 30%,color-mix(in srgb,var(--accInk) 45%,#ffffff) 50%,var(--accInk) 70%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 8s linear infinite">Herramientas que utilizo</p>
+      <h2 style="margin:0 0 28px;font-size:clamp(28px,3.6vw,40px);font-weight:800;letter-spacing:-0.02em">Habilidades y <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;padding:0 .16em .12em .06em;margin:0 -.16em -.12em -.06em;background:linear-gradient(90deg,var(--accInk) 30%,color-mix(in srgb,var(--accInk) 40%,#ffffff) 50%,var(--accInk) 70%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 7s linear infinite">software</em></h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:clamp(12px,1.6vw,18px)">
+      <div data-glow role="button" tabindex="0" onClick="{{ openSkill }}" onKeyDown="{{ keyOpenSkill }}" style="cursor:pointer;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:12px;padding:22px 12px;background:var(--card);border:1px solid var(--line);border-radius:20px;transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s,background .6s ease" style-hover="transform:translateY(-6px);box-shadow:var(--shadow)" style-focus="outline:2px solid var(--acc);outline-offset:3px"><div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div><img src="assets/images/icons/sketchup.png" alt="" loading="lazy" style="width:50px;height:50px;object-fit:contain;border-radius:12px"><span style="font-size:13px;font-weight:700">SketchUp</span></div>
+      <div data-glow role="button" tabindex="0" onClick="{{ openSkill }}" onKeyDown="{{ keyOpenSkill }}" style="cursor:pointer;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:12px;padding:22px 12px;background:var(--card);border:1px solid var(--line);border-radius:20px;transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s,background .6s ease" style-hover="transform:translateY(-6px);box-shadow:var(--shadow)" style-focus="outline:2px solid var(--acc);outline-offset:3px"><div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div><img src="assets/images/icons/enscape.png" alt="" loading="lazy" style="width:50px;height:50px;object-fit:contain;border-radius:12px"><span style="font-size:13px;font-weight:700">Enscape</span></div>
+      <div data-glow role="button" tabindex="0" onClick="{{ openSkill }}" onKeyDown="{{ keyOpenSkill }}" style="cursor:pointer;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:12px;padding:22px 12px;background:var(--card);border:1px solid var(--line);border-radius:20px;transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s,background .6s ease" style-hover="transform:translateY(-6px);box-shadow:var(--shadow)" style-focus="outline:2px solid var(--acc);outline-offset:3px"><div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div><img src="assets/images/icons/lumion.png" alt="" loading="lazy" style="width:50px;height:50px;object-fit:contain;border-radius:12px"><span style="font-size:13px;font-weight:700">Lumion</span></div>
+      <div data-glow role="button" tabindex="0" onClick="{{ openSkill }}" onKeyDown="{{ keyOpenSkill }}" style="cursor:pointer;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:12px;padding:22px 12px;background:var(--card);border:1px solid var(--line);border-radius:20px;transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s,background .6s ease" style-hover="transform:translateY(-6px);box-shadow:var(--shadow)" style-focus="outline:2px solid var(--acc);outline-offset:3px"><div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div><img src="assets/images/icons/photoshop.png" alt="" loading="lazy" style="width:50px;height:50px;object-fit:contain;border-radius:12px"><span style="font-size:13px;font-weight:700">Photoshop</span></div>
+      <div data-glow role="button" tabindex="0" onClick="{{ openSkill }}" onKeyDown="{{ keyOpenSkill }}" style="cursor:pointer;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:12px;padding:22px 12px;background:var(--card);border:1px solid var(--line);border-radius:20px;transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s,background .6s ease" style-hover="transform:translateY(-6px);box-shadow:var(--shadow)" style-focus="outline:2px solid var(--acc);outline-offset:3px"><div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div><img src="assets/images/icons/capcut.png" alt="" loading="lazy" style="width:50px;height:50px;object-fit:contain;border-radius:12px"><span style="font-size:13px;font-weight:700">CapCut</span></div>
+      <div data-glow role="button" tabindex="0" onClick="{{ openSkill }}" onKeyDown="{{ keyOpenSkill }}" style="cursor:pointer;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:12px;padding:22px 12px;background:var(--card);border:1px solid var(--line);border-radius:20px;transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s,background .6s ease" style-hover="transform:translateY(-6px);box-shadow:var(--shadow)" style-focus="outline:2px solid var(--acc);outline-offset:3px"><div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div><img src="assets/images/icons/excel.png" alt="" loading="lazy" style="width:50px;height:50px;object-fit:contain;border-radius:12px"><span style="font-size:13px;font-weight:700">Excel</span></div>
+      <div data-glow role="button" tabindex="0" onClick="{{ openSkill }}" onKeyDown="{{ keyOpenSkill }}" style="cursor:pointer;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:12px;padding:22px 12px;background:var(--card);border:1px solid var(--line);border-radius:20px;transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s,background .6s ease" style-hover="transform:translateY(-6px);box-shadow:var(--shadow)" style-focus="outline:2px solid var(--acc);outline-offset:3px"><div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div><img src="assets/images/icons/powerpoint.png" alt="" loading="lazy" style="width:50px;height:50px;object-fit:contain;border-radius:12px"><span style="font-size:13px;font-weight:700">PowerPoint</span></div>
+      <div data-glow role="button" tabindex="0" onClick="{{ openSkill }}" onKeyDown="{{ keyOpenSkill }}" style="cursor:pointer;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:12px;padding:22px 12px;background:var(--card);border:1px solid var(--line);border-radius:20px;transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s,background .6s ease" style-hover="transform:translateY(-6px);box-shadow:var(--shadow)" style-focus="outline:2px solid var(--acc);outline-offset:3px"><div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div><img src="assets/images/icons/word.png" alt="" loading="lazy" style="width:50px;height:50px;object-fit:contain;border-radius:12px"><span style="font-size:13px;font-weight:700">Word</span></div>
+    </div>
+  </section>
+
+  <!-- ============ EXPERIENCIA ============ -->
+  <section id="experiencia" data-sec="experiencia" data-screen-label="Experiencia" style="scroll-margin-top:96px;max-width:1180px;margin:0 auto;padding:clamp(40px,6vw,70px) clamp(18px,4vw,32px)">
+    <div data-reveal>
+      <p style="margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:linear-gradient(90deg,var(--accInk) 30%,color-mix(in srgb,var(--accInk) 45%,#ffffff) 50%,var(--accInk) 70%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 8s linear infinite">Trayectoria profesional</p>
+      <h2 style="margin:0 0 28px;font-size:clamp(28px,3.6vw,40px);font-weight:800;letter-spacing:-0.02em">Mi <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;padding:0 .16em .12em .06em;margin:0 -.16em -.12em -.06em;background:linear-gradient(90deg,var(--accInk) 30%,color-mix(in srgb,var(--accInk) 40%,#ffffff) 50%,var(--accInk) 70%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 7s linear infinite">experiencia</em></h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:clamp(14px,1.8vw,20px)">
+      <div data-glow style="position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:26px 26px 24px;transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s,background .6s ease" style-hover="transform:translateY(-5px);box-shadow:var(--shadow)"><div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div><p style="margin:0;font-size:34px;font-weight:800;letter-spacing:-0.03em;color:var(--accInk)">1+</p><p style="margin:8px 0 0;font-size:14.5px;font-weight:700">Año de experiencia</p><p style="margin:3px 0 0;font-size:13px;color:var(--text2)">en diseño de interiores</p></div>
+      <div data-glow style="position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:26px 26px 24px;transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s,background .6s ease" style-hover="transform:translateY(-5px);box-shadow:var(--shadow)"><div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div><p style="margin:0;font-size:34px;font-weight:800;letter-spacing:-0.03em;color:var(--accInk)">10+</p><p style="margin:8px 0 0;font-size:14.5px;font-weight:700">Proyectos</p><p style="margin:3px 0 0;font-size:13px;color:var(--text2)">desarrollados</p></div>
+      <div data-glow style="position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:26px 26px 24px;transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s,background .6s ease" style-hover="transform:translateY(-5px);box-shadow:var(--shadow)"><div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div><p style="margin:0;font-size:26px;line-height:38px;font-weight:800;letter-spacing:-0.02em;color:var(--accInk)">Clientes</p><p style="margin:8px 0 0;font-size:14.5px;font-weight:700">Satisfechos</p><p style="margin:3px 0 0;font-size:13px;color:var(--text2)">y espacios transformados</p></div>
+      <div data-glow style="position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:26px 26px 24px;transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s,background .6s ease" style-hover="transform:translateY(-5px);box-shadow:var(--shadow)"><div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div><p style="margin:0;font-size:26px;line-height:38px;font-weight:800;letter-spacing:-0.02em;color:var(--accInk)">Formación</p><p style="margin:8px 0 0;font-size:14.5px;font-weight:700">Sólida</p><p style="margin:3px 0 0;font-size:13px;color:var(--text2)">y actualización constante</p></div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACTO ============ -->
+  <section id="contacto" data-sec="contacto" data-screen-label="Contacto" style="scroll-margin-top:96px;margin-top:clamp(30px,4vw,50px);background:linear-gradient(180deg, transparent, var(--accSoft) 22%, var(--accSoft) 82%, transparent);padding:clamp(56px,8vw,96px) 0">
+    <div style="max-width:1180px;margin:0 auto;padding:0 clamp(18px,4vw,32px)">
+      <div data-reveal style="text-align:center;max-width:560px;margin:0 auto 36px">
+        <p style="margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:linear-gradient(90deg,var(--accInk) 30%,color-mix(in srgb,var(--accInk) 45%,#ffffff) 50%,var(--accInk) 70%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 8s linear infinite">Trabajemos juntos</p>
+        <h2 style="margin:0;font-size:clamp(28px,3.8vw,42px);font-weight:800;letter-spacing:-0.02em;text-wrap:balance">¿Tienes un proyecto <em style="font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;padding:0 .16em .12em .06em;margin:0 -.16em -.12em -.06em;background:linear-gradient(90deg,var(--accInk) 30%,color-mix(in srgb,var(--accInk) 40%,#ffffff) 50%,var(--accInk) 70%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 7s linear infinite">en mente?</em></h2>
+        <p style="margin:14px 0 0;font-size:14.5px;line-height:1.7;color:var(--text2)">Estoy lista para ayudarte a transformar tus ideas en espacios únicos. Hablemos y diseñemos juntos algo <span style="position:relative;display:inline-block;font-weight:700;color:var(--accInk)"><span style="visibility:hidden">inolvidable.</span><sc-for list="{{ ctWords }}" as="w" hint-placeholder-count="0"><span style="position:absolute;left:0;top:0;white-space:nowrap;opacity:{{ w.op }};filter:{{ w.fil }};transform:translateY({{ w.ty }});transition:opacity .9s ease,filter .9s ease,transform .9s ease">{{ w.t }}</span></sc-for></span></p>
+      </div>
+
+      <!-- Brief interactivo -->
+      <div data-reveal data-glow style="position:relative;overflow:hidden;max-width:660px;margin:0 auto 42px;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:clamp(22px,3.4vw,34px);box-shadow:var(--shadow);transition:background .6s ease,border-color .6s ease">
+        <div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+          <p style="margin:0;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accInk)">Diseñemos tu brief</p>
+          <sc-if value="{{ briefEnCurso }}" hint-placeholder-val="{{ true }}">
+            <span style="font-size:11.5px;font-weight:800;color:var(--text2)">Paso {{ briefPaso }} de 3</span>
+          </sc-if>
+        </div>
+        <sc-if value="{{ briefP1 }}" hint-placeholder-val="{{ true }}">
+          <div style="animation:briefIn .5s ease both">
+            <h3 style="margin:12px 0 16px;font-size:clamp(18px,2vw,21px);font-weight:800;letter-spacing:-0.01em">¿Qué espacio quieres transformar?</h3>
+            <div style="display:flex;flex-wrap:wrap;gap:10px">
+              <sc-for list="{{ briefEspacios }}" as="op" hint-placeholder-count="0">
+                <button type="button" data-val="{{ op }}" onClick="{{ briefPickEspacio }}" data-glow data-ripple style="position:relative;padding:11px 18px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--text);font-size:13.5px;font-weight:700;cursor:pointer;transition:background .3s,border-color .3s,transform .3s" style-hover="background:var(--accSoft);border-color:var(--acc);transform:translateY(-2px)">{{ op }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ briefP2 }}" hint-placeholder-val="{{ false }}">
+          <div style="animation:briefIn .5s ease both">
+            <h3 style="margin:12px 0 16px;font-size:clamp(18px,2vw,21px);font-weight:800;letter-spacing:-0.01em">¿Con qué estilo sueñas?</h3>
+            <div style="display:flex;flex-wrap:wrap;gap:10px">
+              <sc-for list="{{ briefEstilos }}" as="op" hint-placeholder-count="0">
+                <button type="button" data-val="{{ op }}" onClick="{{ briefPickEstilo }}" data-glow data-ripple style="position:relative;padding:11px 18px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--text);font-size:13.5px;font-weight:700;cursor:pointer;transition:background .3s,border-color .3s,transform .3s" style-hover="background:var(--accSoft);border-color:var(--acc);transform:translateY(-2px)">{{ op }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ briefP3 }}" hint-placeholder-val="{{ false }}">
+          <div style="animation:briefIn .5s ease both">
+            <h3 style="margin:12px 0 16px;font-size:clamp(18px,2vw,21px);font-weight:800;letter-spacing:-0.01em">¿Cuándo te gustaría empezar?</h3>
+            <div style="display:flex;flex-wrap:wrap;gap:10px">
+              <sc-for list="{{ briefTiempos }}" as="op" hint-placeholder-count="0">
+                <button type="button" data-val="{{ op }}" onClick="{{ briefPickTiempo }}" data-glow data-ripple style="position:relative;padding:11px 18px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--text);font-size:13.5px;font-weight:700;cursor:pointer;transition:background .3s,border-color .3s,transform .3s" style-hover="background:var(--accSoft);border-color:var(--acc);transform:translateY(-2px)">{{ op }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ briefP4 }}" hint-placeholder-val="{{ false }}">
+          <div style="animation:briefIn .5s ease both">
+            <h3 style="margin:12px 0 8px;font-size:clamp(18px,2vw,21px);font-weight:800;letter-spacing:-0.01em">¡Listo! Me encanta tu proyecto.</h3>
+            <p style="margin:0 0 18px;font-size:14px;line-height:1.6;color:var(--text2)">{{ briefResumen }}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+              <a href="{{ briefWa }}" target="_blank" rel="noopener" data-glow data-ripple style="position:relative;display:inline-flex;align-items:center;gap:10px;padding:13px 24px;border-radius:999px;background:var(--acc);color:#ffffff;font-size:14px;font-weight:800;text-decoration:none;transition:transform .3s,box-shadow .3s" style-hover="transform:translateY(-3px);box-shadow:var(--shadow)">
+                <img src="assets/images/icons/whatsapp.png" alt="" style="width:20px;height:20px;border-radius:5px">
+                Enviar por WhatsApp
+              </a>
+              <button type="button" onClick="{{ briefReset }}" data-glow data-ripple style="position:relative;padding:12px 20px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--text2);font-size:13px;font-weight:700;cursor:pointer;transition:background .3s,color .3s" style-hover="background:var(--accSoft);color:var(--text)">Empezar de nuevo</button>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:clamp(12px,1.6vw,18px)">
+        <a href="https://wa.me/573017777049?text=Hola%20Geraldine%2C%20vi%20tu%20portafolio%20y%20me%20gustar%C3%ADa%20hablar%20sobre%20un%20proyecto." target="_blank" rel="noopener" data-glow data-ripple style="position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;padding:18px 20px;background:var(--card);border:1px solid var(--line);border-radius:20px;text-decoration:none;color:var(--text);transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s,border-color .4s,background .6s ease" style-hover="transform:translateY(-5px);box-shadow:var(--shadow);border-color:#25d366"><div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div><img src="assets/images/icons/whatsapp.png" alt="" loading="lazy" style="flex:none;width:44px;height:44px;border-radius:13px;object-fit:cover;transition:transform .4s"><span><span style="display:block;font-size:14.5px;font-weight:800">WhatsApp</span><span style="display:block;margin-top:2px;font-size:12.5px;color:var(--text2)">301-777-7049</span><span style="display:block;margin-top:5px;font-size:12px;font-weight:700;color:var(--accInk)">Escríbeme ahora</span></span></a>
+        <a href="tel:+573237981043" data-glow data-ripple style="position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;padding:18px 20px;background:var(--card);border:1px solid var(--line);border-radius:20px;text-decoration:none;color:var(--text);transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s,border-color .4s,background .6s ease" style-hover="transform:translateY(-5px);box-shadow:var(--shadow);border-color:var(--acc)"><div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div><span style="flex:none;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:13px;background:var(--accSoft);color:var(--accInk);transition:transform .4s"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.4 2.1L8 10a16 16 0 0 0 6 6l1.3-1.4a2 2 0 0 1 2.1-.4c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"></path></svg></span><span><span style="display:block;font-size:14.5px;font-weight:800">Llamada</span><span style="display:block;margin-top:2px;font-size:12.5px;color:var(--text2)">323-798-1043</span><span style="display:block;margin-top:5px;font-size:12px;font-weight:700;color:var(--accInk)">Llámame directo</span></span></a>
+        <a href="mailto:geral.olivar3105@gmail.com" data-glow data-ripple style="position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;padding:18px 20px;background:var(--card);border:1px solid var(--line);border-radius:20px;text-decoration:none;color:var(--text);transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s,border-color .4s,background .6s ease" style-hover="transform:translateY(-5px);box-shadow:var(--shadow);border-color:var(--acc)"><div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div><span style="flex:none;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:13px;background:var(--accSoft);color:var(--accInk);transition:transform .4s"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M22 6l-10 7L2 6"></path></svg></span><span style="min-width:0"><span style="display:block;font-size:14.5px;font-weight:800">Correo</span><span style="display:block;margin-top:2px;font-size:12.5px;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">geral.olivar3105@gmail.com</span><span style="display:block;margin-top:5px;font-size:12px;font-weight:700;color:var(--accInk)">Envíame un correo</span></span></a>
+        <a href="https://www.linkedin.com/in/geraldine-olivar-98ab19407/" target="_blank" rel="noopener" data-glow data-ripple style="position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;padding:18px 20px;background:var(--card);border:1px solid var(--line);border-radius:20px;text-decoration:none;color:var(--text);transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s,border-color .4s,background .6s ease" style-hover="transform:translateY(-5px);box-shadow:var(--shadow);border-color:#0a66c2"><div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div><img src="assets/images/icons/linkedin.png" alt="" loading="lazy" style="flex:none;width:44px;height:44px;border-radius:13px;object-fit:cover;transition:transform .4s"><span><span style="display:block;font-size:14.5px;font-weight:800">LinkedIn</span><span style="display:block;margin-top:2px;font-size:12.5px;color:var(--text2)">Conéctate conmigo</span><span style="display:block;margin-top:5px;font-size:12px;font-weight:700;color:var(--accInk)">Ver perfil</span></span></a>
+        <a href="https://drive.google.com/file/d/1yaTSENG0WOvy9u2r0mwijvtcetwb3NO2/view" target="_blank" rel="noopener" data-glow data-ripple style="position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;padding:18px 20px;background:var(--card);border:1px solid var(--line);border-radius:20px;text-decoration:none;color:var(--text);transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s,border-color .4s,background .6s ease" style-hover="transform:translateY(-5px);box-shadow:var(--shadow);border-color:var(--acc)"><div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div><span style="flex:none;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:13px;background:var(--accSoft);color:var(--accInk);transition:transform .4s"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M6 11l6 6 6-6M4 21h16"></path></svg></span><span><span style="display:block;font-size:14.5px;font-weight:800">Portafolio</span><span style="display:block;margin-top:2px;font-size:12.5px;color:var(--text2)">Versión PDF</span><span style="display:block;margin-top:5px;font-size:12px;font-weight:700;color:var(--accInk)">Descargar</span></span></a>
+        <a href="https://drive.google.com/file/d/1U0LZY_7knzGATUEYVeD3SnRkDpvfdBs0/view" target="_blank" rel="noopener" data-glow data-ripple style="position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;padding:18px 20px;background:var(--card);border:1px solid var(--line);border-radius:20px;text-decoration:none;color:var(--text);transition:transform .45s cubic-bezier(.2,.75,.2,1),box-shadow .45s,border-color .4s,background .6s ease" style-hover="transform:translateY(-5px);box-shadow:var(--shadow);border-color:var(--acc)"><div data-glowlayer style="position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .45s ease"></div><span style="flex:none;display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:13px;background:var(--accSoft);color:var(--accInk);transition:transform .4s"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6M9 13h6M9 17h6"></path></svg></span><span><span style="display:block;font-size:14.5px;font-weight:800">Currículum</span><span style="display:block;margin-top:2px;font-size:12.5px;color:var(--text2)">Hoja de vida en PDF</span><span style="display:block;margin-top:5px;font-size:12px;font-weight:700;color:var(--accInk)">Descargar</span></span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer data-screen-label="Footer" style="border-top:1px solid var(--line);transition:border-color .6s ease">
+    <div style="max-width:1180px;margin:0 auto;padding:clamp(40px,5vw,60px) clamp(18px,4vw,32px) 28px">
+      <div style="display:flex;flex-wrap:wrap;gap:clamp(28px,5vw,70px);justify-content:space-between">
+        <div style="min-width:200px">
+          <p style="margin:0;font-family:'Great Vibes',cursive;font-size:36px;line-height:1.1;padding:.08em .3em .28em .1em;margin:-.08em -.3em -.28em -.1em;background:linear-gradient(90deg,var(--accInk) 30%,color-mix(in srgb,var(--accInk) 40%,#ffffff) 50%,var(--accInk) 70%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 9s linear infinite">Geraldine Olivar</p>
+          <p style="margin:8px 0 0;font-size:10.5px;font-weight:800;letter-spacing:.28em;text-transform:uppercase;color:var(--text2)">Diseño de interiores</p>
+        </div>
+        <div style="display:flex;gap:clamp(28px,4vw,60px);flex-wrap:wrap">
+          <div>
+            <p style="margin:0 0 12px;font-size:12.5px;font-weight:800">Navegación</p>
+            <div style="display:grid;grid-template-columns:auto auto;gap:8px 26px">
+              <a href="#inicio" style="font-size:12.5px;color:var(--text2);text-decoration:none;transition:color .3s" style-hover="color:var(--accInk)">Inicio</a>
+              <a href="#habilidades" style="font-size:12.5px;color:var(--text2);text-decoration:none;transition:color .3s" style-hover="color:var(--accInk)">Habilidades</a>
+              <a href="#sobre-mi" style="font-size:12.5px;color:var(--text2);text-decoration:none;transition:color .3s" style-hover="color:var(--accInk)">Sobre mí</a>
+              <a href="#experiencia" style="font-size:12.5px;color:var(--text2);text-decoration:none;transition:color .3s" style-hover="color:var(--accInk)">Experiencia</a>
+              <a href="#proyectos" style="font-size:12.5px;color:var(--text2);text-decoration:none;transition:color .3s" style-hover="color:var(--accInk)">Proyectos</a>
+              <a href="#contacto" style="font-size:12.5px;color:var(--text2);text-decoration:none;transition:color .3s" style-hover="color:var(--accInk)">Contacto</a>
+            </div>
+          </div>
+          <div>
+            <p style="margin:0 0 12px;font-size:12.5px;font-weight:800">Conectemos</p>
+            <div style="display:flex;gap:9px">
+              <a href="https://www.linkedin.com/in/geraldine-olivar-98ab19407/" target="_blank" rel="noopener" aria-label="LinkedIn" data-ripple style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:999px;border:1px solid var(--line);color:var(--text2);text-decoration:none;font-size:12.5px;font-weight:800;transition:color .3s,border-color .3s,transform .3s" style-hover="color:#0a66c2;border-color:#0a66c2;transform:translateY(-3px)"><img src="assets/images/icons/linkedin.png" alt="" loading="lazy" style="width:18px;height:18px;border-radius:4px"></a>
+              <a href="mailto:geral.olivar3105@gmail.com" aria-label="Correo" data-ripple style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:999px;border:1px solid var(--line);color:var(--text2);text-decoration:none;transition:color .3s,border-color .3s,transform .3s" style-hover="color:var(--accInk);border-color:var(--acc);transform:translateY(-3px)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M22 6l-10 7L2 6"></path></svg></a>
+              <a href="https://wa.me/573017777049" target="_blank" rel="noopener" aria-label="WhatsApp" data-ripple style="display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:999px;border:1px solid var(--line);color:var(--text2);text-decoration:none;transition:color .3s,border-color .3s,transform .3s" style-hover="color:#1fa855;border-color:#25d366;transform:translateY(-3px)"><img src="assets/images/icons/whatsapp.png" alt="" loading="lazy" style="width:18px;height:18px;border-radius:4px"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-top:36px;padding-top:22px;border-top:1px solid var(--line)">
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <p style="margin:0;font-size:12.5px;color:var(--text2)">© 2026 Geraldine Olivar · Todos los derechos reservados.</p>
+          <sc-if value="{{ visitasVisible }}" hint-placeholder-val="{{ false }}">
+            <span title="Visitas a la página" style="display:inline-flex;align-items:center;gap:7px;padding:5px 13px;border-radius:999px;border:1px solid var(--line);background:var(--accSoft);font-size:12px;font-weight:700;color:var(--accInk)">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z"></path><circle cx="12" cy="12" r="2.6"></circle></svg>
+              {{ visitasTxt }} visitas
+            </span>
+          </sc-if>
+        </div>
+        <button type="button" onClick="{{ backToTop }}" data-ripple data-magnetic aria-label="Volver arriba" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;border:1px solid var(--line);background:var(--accSoft);color:var(--accInk);cursor:pointer;transition:transform .35s,box-shadow .35s" style-hover="transform:translateY(-4px);box-shadow:var(--shadow)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"></path></svg>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============ AVISO DE CANCIÓN ============ -->
+  <sc-if value="{{ songToast }}" hint-placeholder-val="{{ false }}">
+    <div aria-live="polite" style="position:fixed;left:0;right:0;bottom:24px;z-index:160;display:flex;justify-content:center;pointer-events:none">
+      <div style="display:flex;align-items:center;gap:9px;padding:8px 16px;border-radius:999px;background:var(--glass);backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);border:1px solid var(--line);box-shadow:var(--shadow);animation:{{ toastAnim }}">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accInk)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="opacity:.8"><path d="M9 18V6l11-2v12"></path><circle cx="6.5" cy="18" r="2.5"></circle><circle cx="17.5" cy="16" r="2.5"></circle></svg>
+        <span style="font-size:11.5px;font-weight:600;color:var(--text2)">{{ songTitle }}</span>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ MODAL PROYECTO ============ -->
+  <sc-if value="{{ modalVisible }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ onBackdrop }}" style="position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:clamp(12px,3vw,32px);background:rgba(12,9,20,.5);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);animation:{{ bkAnim }}">
+      <div role="dialog" aria-modal="true" aria-label="{{ mTitle }}" data-modal-scroll style="position:relative;width:100%;max-width:840px;max-height:88vh;overflow-y:auto;scrollbar-width:none;background:var(--card);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow);animation:{{ mAnim }}">
+        <div style="position:sticky;top:0;height:0;z-index:8">
+          <sc-if value="{{ mGalGyro }}" hint-placeholder-val="{{ false }}">
+            <button type="button" onClick="{{ galGyro }}" aria-label="Activar giroscopio" title="Giroscopio" style="position:absolute;top:14px;right:106px;display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(14,11,22,.45);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;cursor:pointer;transition:transform .3s,background .3s" style-hover="transform:scale(1.12)">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><ellipse cx="12" cy="12" rx="10" ry="4.2"></ellipse><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(60 12 12)"></ellipse></svg>
+            </button>
+          </sc-if>
+          <button type="button" onClick="{{ openBig }}" aria-label="Ver en grande" title="Ver en grande" style="position:absolute;top:14px;right:60px;display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(14,11,22,.45);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;cursor:pointer;transition:transform .3s,background .3s" style-hover="transform:scale(1.12);background:rgba(14,11,22,.7)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3"></path><path d="M16 3h3a2 2 0 0 1 2 2v3"></path><path d="M8 21H5a2 2 0 0 1-2-2v-3"></path><path d="M16 21h3a2 2 0 0 0 2-2v-3"></path></svg>
+          </button>
+          <button type="button" data-modal-close onClick="{{ closeModal }}" aria-label="Cerrar" style="position:absolute;top:14px;right:14px;display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(14,11,22,.45);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;cursor:pointer;transition:transform .3s,background .3s" style-hover="transform:rotate(90deg);background:rgba(14,11,22,.7)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+          </button>
+        </div>
+        <div style="position:relative;background:#0e0b16">
+          <div data-gal-main style="position:relative;width:100%;height:clamp(230px,40vh,390px)"></div>
+          <sc-if value="{{ mGalZones }}" hint-placeholder-val="{{ false }}">
+            <button type="button" onClick="{{ galPrev }}" aria-label="Foto anterior" style="position:absolute;left:0;top:0;bottom:0;width:32%;z-index:3;display:flex;align-items:center;justify-content:flex-start;padding:0 0 0 14px;border:0;background:linear-gradient(90deg,rgba(10,8,18,.32),transparent);cursor:pointer;opacity:{{ mPrevOp }};transition:opacity .45s ease">
+              <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:999px;background:rgba(14,11,22,.5);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
+              </span>
+            </button>
+            <button type="button" onClick="{{ galNext }}" aria-label="Foto siguiente" style="position:absolute;right:0;top:0;bottom:0;width:32%;z-index:3;display:flex;align-items:center;justify-content:flex-end;padding:0 14px 0 0;border:0;background:linear-gradient(270deg,rgba(10,8,18,.32),transparent);cursor:pointer;opacity:{{ mNextOp }};transition:opacity .45s ease">
+              <span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:999px;background:rgba(14,11,22,.5);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+              </span>
+            </button>
+          </sc-if>
+        </div>
+        <div style="padding:6px clamp(22px,4vw,40px) clamp(26px,4vw,40px)">
+          <sc-if value="{{ mGalMulti }}" hint-placeholder-val="{{ false }}">
+            <div role="tablist" aria-label="Galería del proyecto" style="display:flex;gap:10px;flex-wrap:wrap;padding:16px 0 18px">
+              <sc-for list="{{ mGallery }}" as="g" hint-placeholder-count="0">
+                <button type="button" data-gi="{{ $index }}" onClick="{{ selectGal }}" aria-label="{{ g.etiqueta }}" title="{{ g.etiqueta }}" style="position:relative;flex:none;width:78px;height:58px;border-radius:12px;overflow:hidden;padding:0;cursor:pointer;background:#14111f;border:2px solid {{ g.borde }};opacity:{{ g.opacidad }};transition:border-color .3s,opacity .3s,transform .3s" style-hover="transform:translateY(-2px)">
+                  <sc-if value="{{ g.esVisual }}" hint-placeholder-val="{{ true }}"><img src="{{ g.src }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></sc-if>
+                  <sc-if value="{{ g.esVideo }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"></path></svg></span></sc-if>
+                  <sc-if value="{{ g.es360 }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:4px;bottom:4px;padding:2px 6px;border-radius:99px;background:rgba(14,11,22,.72);color:#fff;font-size:9px;font-weight:800;letter-spacing:.03em">360°</span></sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </sc-if>
+          <span style="display:inline-block;padding:5px 12px;border-radius:999px;background:var(--accSoft);color:var(--accInk);font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase">{{ mCat }}</span>
+          <h3 style="margin:14px 0 4px;font-size:clamp(23px,3vw,30px);font-weight:800;letter-spacing:-0.02em">{{ mTitle }}</h3>
+          <p style="margin:0 0 20px;font-size:13.5px;font-weight:600;color:var(--accInk)">{{ mSub }}</p>
+          <p style="margin:0 0 6px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text2)">Descripción</p>
+          <p style="margin:0 0 24px;font-size:14.5px;line-height:1.75;color:var(--text2)">{{ mDesc }}</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px;margin-bottom:24px">
+            <div>
+              <p style="margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text2)">Resultado</p>
+              <div style="display:flex;flex-direction:column;gap:9px">
+                <sc-for list="{{ mResultado }}" as="item" hint-placeholder-count="0">
+                  <div style="display:flex;gap:10px;align-items:flex-start"><span style="flex:none;width:6px;height:6px;border-radius:99px;background:var(--acc);margin-top:7.5px"></span><p style="margin:0;font-size:14px;line-height:1.6;color:var(--text2)">{{ item }}</p></div>
+                </sc-for>
+              </div>
+            </div>
+            <div>
+              <p style="margin:0 0 10px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--text2)">Desafío</p>
+              <div style="display:flex;flex-direction:column;gap:9px">
+                <sc-for list="{{ mDesafio }}" as="item" hint-placeholder-count="0">
+                  <div style="display:flex;gap:10px;align-items:flex-start"><span style="flex:none;width:6px;height:6px;border-radius:99px;background:var(--acc);margin-top:7.5px"></span><p style="margin:0;font-size:14px;line-height:1.6;color:var(--text2)">{{ item }}</p></div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <div style="background:var(--accSoft);border-radius:16px;padding:20px 22px">
+            <p style="margin:0 0 7px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accInk)">Conclusión</p>
+            <p style="margin:0;font-size:14px;line-height:1.7;color:var(--text)">{{ mConclusion }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ============ VISTA GRANDE (GALERÍA) ============ -->
+  <sc-if value="{{ bigVisible }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:300;background:rgba(8,6,14,.9);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);animation:bIn .35s ease">
+      <div data-gal-big style="position:absolute;inset:clamp(8px,3vw,44px);animation:gIn .55s cubic-bezier(.2,.75,.25,1)"></div>
+      <sc-if value="{{ mGalZones }}" hint-placeholder-val="{{ false }}">
+        <button type="button" onClick="{{ galPrev }}" aria-label="Foto anterior" style="position:absolute;left:0;top:0;bottom:0;width:24%;z-index:4;display:flex;align-items:center;justify-content:flex-start;padding:0 0 0 18px;border:0;background:linear-gradient(90deg,rgba(8,6,14,.4),transparent);cursor:pointer;opacity:{{ mPrevOp }};transition:opacity .45s ease">
+          <span style="display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:999px;background:rgba(14,11,22,.5);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
+          </span>
+        </button>
+        <button type="button" onClick="{{ galNext }}" aria-label="Foto siguiente" style="position:absolute;right:0;top:0;bottom:0;width:24%;z-index:4;display:flex;align-items:center;justify-content:flex-end;padding:0 18px 0 0;border:0;background:linear-gradient(270deg,rgba(8,6,14,.4),transparent);cursor:pointer;opacity:{{ mNextOp }};transition:opacity .45s ease">
+          <span style="display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:999px;background:rgba(14,11,22,.5);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+          </span>
+        </button>
+      </sc-if>
+      <button type="button" onClick="{{ closeBig }}" aria-label="Cerrar vista grande" style="position:absolute;top:16px;right:16px;z-index:5;display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(14,11,22,.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;cursor:pointer;transition:transform .3s,background .3s" style-hover="transform:rotate(90deg);background:rgba(14,11,22,.75)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+      </button>
+    </div>
+  </sc-if>
+
+  <!-- ============ MODO LINTERNA ============ -->
+  <sc-if value="{{ lanternOn }}" hint-placeholder-val="{{ false }}">
+    <div data-lantern aria-hidden="true" style="position:fixed;inset:0;z-index:95;pointer-events:none;background:radial-gradient(circle 300px at 50% 40%, transparent 0%, rgba(2,1,8,.9) 74%);animation:bIn .6s ease"></div>
+  </sc-if>
+  <sc-if value="{{ lanternToast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:96;padding:10px 18px;border-radius:999px;background:rgba(21,18,32,.85);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#f0eef6;font-size:12.5px;font-weight:700;white-space:nowrap;animation:fadeUp .5s ease both">Modo linterna activado · mantén presionado el botón de tema para salir</div>
+  </sc-if>
+
+  <!-- ============ MODAL HABILIDAD ============ -->
+  <sc-if value="{{ skillVisible }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ onSkillBackdrop }}" style="position:fixed;inset:0;z-index:250;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(12,9,20,.45);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);animation:bIn .3s ease">
+      <div role="dialog" aria-modal="true" aria-label="{{ skName }}" style="position:relative;width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:30px;display:flex;flex-direction:column;gap:14px;align-items:flex-start;animation:mIn .45s cubic-bezier(.2,.75,.25,1)">
+        <div data-skill-icon style="width:56px;height:56px;border-radius:14px;overflow:hidden"></div>
+        <h3 style="margin:0;font-size:21px;font-weight:800;letter-spacing:-0.01em">{{ skName }}</h3>
+        <p style="margin:0;font-size:14.5px;line-height:1.75;color:var(--text2)">{{ skDesc }}</p>
+        <button type="button" onClick="{{ closeSkill }}" aria-label="Cerrar" style="position:absolute;top:14px;right:14px;display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:999px;border:1px solid var(--line);background:var(--accSoft);color:var(--accInk);cursor:pointer;transition:transform .3s" style-hover="transform:rotate(90deg)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+        </button>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;acento&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#8b5cf6&quot;,&quot;options&quot;:[&quot;#8b5cf6&quot;,&quot;#c2703d&quot;,&quot;#3e7c59&quot;,&quot;#2a6fdb&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tema&quot;},&quot;temaInicial&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;claro&quot;,&quot;options&quot;:[&quot;claro&quot;,&quot;oscuro&quot;],&quot;tsType&quot;:&quot;'claro' | 'oscuro'&quot;,&quot;section&quot;:&quot;Tema&quot;},&quot;estiloSonido&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;galaxia&quot;,&quot;options&quot;:[&quot;galaxia&quot;,&quot;lunar&quot;],&quot;tsType&quot;:&quot;'galaxia' | 'lunar'&quot;,&quot;section&quot;:&quot;Tema&quot;},&quot;videoReel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;assets/videos/reel.mp4&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;}}">
+class Component extends DCLogic {
+  state = { isDark: false, modal: null, closing: false, galIdx: 0, big: false, skill: null, galFlash: null, musicOn: false, musicAvailable: false, soundsOn: true, sndPanel: false, sndStyle: 'galaxia', songToast: false, songTitle: '', vol: 0.25, playing: false, bioIdx: 0, visitas: null, pre: 'run', preN: 0, heroIdx: 0, lantern: false, lanternToast: false, brief: { paso: 1, espacio: '', estilo: '', inicio: '' } };
+
+  _heroWords = ['Creo experiencias.', 'Creo armonía.', 'Creo bienestar.', 'Creo historias.'];
+  _preLetras = 'Geraldine Olivar'.split('');
+  _briefEspacios = ['Cocina', 'Sala', 'Dormitorio', 'Baño', 'Local comercial', 'Oficina', 'Otro espacio'];
+  _briefEstilos = ['Moderno', 'Minimalista', 'Clásico', 'Industrial', 'Bohemio', 'Aún no lo sé'];
+  _briefTiempos = ['Lo antes posible', 'En 1 a 3 meses', 'En 3 a 6 meses', 'Solo estoy explorando'];
+
+  skills = [
+    { icon: 'assets/images/icons/sketchup.png', nombre: 'SketchUp', desc: 'Modelado 3D de espacios residenciales y comerciales, desarrollando propuestas de distribución, mobiliario y diseño interior.' },
+    { icon: 'assets/images/icons/enscape.png', nombre: 'Enscape', desc: 'Renderizado en tiempo real para generar visualizaciones fotorrealistas, recorridos virtuales y presentaciones de alta calidad.' },
+    { icon: 'assets/images/icons/lumion.png', nombre: 'Lumion', desc: 'Creación de renders y animaciones arquitectónicas con iluminación, materiales y paisajismo para presentar proyectos de forma más inmersiva.' },
+    { icon: 'assets/images/icons/photoshop.png', nombre: 'Adobe Photoshop', desc: 'Edición y postproducción de imágenes, composición de presentaciones, mejora de renders y desarrollo de material gráfico.' },
+    { icon: 'assets/images/icons/capcut.png', nombre: 'CapCut', desc: 'Edición de videos para presentar proyectos, recorridos virtuales y contenido audiovisual de manera dinámica.' },
+    { icon: 'assets/images/icons/excel.png', nombre: 'Microsoft Excel', desc: 'Organización de información, presupuestos, control de materiales y elaboración de tablas para la gestión de proyectos.' },
+    { icon: 'assets/images/icons/powerpoint.png', nombre: 'Microsoft PowerPoint', desc: 'Diseño de presentaciones profesionales para exponer proyectos, conceptos y propuestas de diseño.' },
+    { icon: 'assets/images/icons/word.png', nombre: 'Microsoft Word', desc: 'Elaboración de informes, memorias descriptivas, documentación técnica y presentación escrita de proyectos.' }
+  ];
+
+  _bioList = ['assets/images/bio/bio-1.jpg', 'assets/images/bio/bio-2.jpg', 'assets/images/bio/bio-3.jpg', 'assets/images/bio/bio-4.jpg', 'assets/images/bio/bio-5.jpg'];
+
+  // Ambient playlist — auto-discovered from assets/audio/lista.json (a plain
+  // list of mp3 filenames). Add/remove a line there = add/remove a song; no
+  // code changes needed. Fallback below only if the list is missing.
+  _playlist = [
+    { src: 'assets/audio/thank-u-next.mp3', titulo: 'thank u next' }
+  ];
+
+  get _MAX_VOL() { return this.state.vol; }
+
+  // Prettifies a filename into a display title
+  _pretty(file) {
+    return file.replace(/\.mp3$/i, '').replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim();
+  }
+
+  // Loads the playlist manifest; silent fallback keeps the current list
+  async _loadPlaylist() {
+    try {
+      const r = await fetch('assets/audio/lista.json', { cache: 'no-store' });
+      if (!r.ok) return;
+      const arr = await r.json();
+      if (Array.isArray(arr) && arr.length) {
+        this._playlist = arr
+          .filter((f) => typeof f === 'string' && /\.mp3$/i.test(f))
+          .map((f) => ({ src: 'assets/audio/' + f, titulo: this._pretty(f) }));
+        this._orderBag = null;
+      }
+    } catch (e) {}
+  }
+
+  // Draws the next track index from a shuffled bag (refilled when empty)
+  _drawSong() {
+    if (!this._orderBag || !this._orderBag.length) {
+      this._orderBag = this._playlist.map((_, i) => i).sort(() => Math.random() - 0.5);
+      // never repeat the track that just finished back-to-back
+      if (this._orderBag.length > 1 && this._orderBag[0] === this._songIdx) this._orderBag.push(this._orderBag.shift());
+    }
+    return this._orderBag.shift();
+  }
+
+  // Subtle toast with the now-playing title
+  _announceSong(titulo) {
+    this.setState({ songTitle: titulo, songToast: true, toastPhase: 'in' });
+    if (this._songToastT) clearTimeout(this._songToastT);
+    if (this._songToastT2) clearTimeout(this._songToastT2);
+    // Play the exit animation, THEN unmount
+    this._songToastT = setTimeout(() => this.setState({ toastPhase: 'out' }), 4500);
+    this._songToastT2 = setTimeout(() => this.setState({ songToast: false }), 5100);
+  }
+
+  // Real project galleries. Local file first; videos fall back to Drive streaming.
+  _buildGals() {
+    const drive = (id) => 'https://drive.usercontent.google.com/download?id=' + id + '&export=download';
+    const img = (s, n, label) => Array.from({ length: n }, (_, i) => ({ tipo: 'imagen', src: 'assets/images/galeria/' + s + '-' + (i + 1) + '.jpg', label }));
+    const pan = (s, n, label) => Array.from({ length: n }, (_, i) => ({ tipo: '360', src: 'assets/images/360/' + s + '-360-' + (i + 1) + '.jpg', label }));
+    const vid = (local, driveId, label) => [{ tipo: 'video', src: 'assets/videos/galeria/' + local, driveId, label }];
+    return {
+      rem: img('rem', 9, ''),
+      cocina: [...img('cocina', 4, ''), ...pan('cocina', 3, '')],
+      tugo: img('tugo', 9, ''),
+      independientes: [
+        ...img('escuchadero', 6, 'Escuchadero'),
+        ...img('sakura', 5, 'Sakura Coffee'),
+        ...img('apartamento', 9, 'Apartamento'), ...pan('apartamento', 3, 'Apartamento'), ...vid('apartamento-video-1.mp4', '1P3QECCJiTksiwiB_TlKkpLlFIvE-mnO5', 'Apartamento'),
+        ...img('sanfilippo', 2, 'San Filippo'), ...pan('sanfilippo', 1, 'San Filippo'), ...vid('sanfilippo-video-1.mp4', '1A1wLMq1c88cRQItlAY97JnLrQE05rEns', 'San Filippo')
+      ]
+    };
+  }
+
+  projects = [
+    {
+      slug: 'rem', img: 'assets/images/proyecto-rem.png', cat: 'Comercial',
+      title: 'R.E.M. Beauty', sub: 'Diseño de local comercial',
+      desc: 'Diseño conceptual de una tienda para la marca R.E.M. Beauty, inspirado en una estética futurista, minimalista y elegante, integrando exhibición de productos y experiencia de compra.',
+      resultado: ['Desarrollo de un espacio comercial con identidad visual sólida.', 'Integración de mobiliario personalizado e iluminación estratégica.', 'Renderizado fotorrealista para la presentación del proyecto.'],
+      desafio: ['Traducir la identidad de una marca internacional a un espacio físico.', 'Diseñar una circulación cómoda sin perder capacidad de exhibición.', 'Equilibrar estética y funcionalidad comercial.'],
+      conclusion: 'El proyecto permitió fortalecer habilidades en diseño comercial, visual merchandising, modelado 3D y presentación arquitectónica, demostrando la importancia del diseño como herramienta para mejorar la experiencia del cliente.'
+    },
+    {
+      slug: 'cocina', img: 'assets/images/proyecto-cocina.png', cat: 'Residencial',
+      title: 'Cocina Residencial', sub: 'Diseño integral de cocina',
+      desc: 'Diseño integral de una cocina residencial desarrollado para una clienta real, priorizando funcionalidad, distribución eficiente y una estética contemporánea.',
+      resultado: ['Propuesta completamente personalizada.', 'Optimización del espacio disponible.', 'Proyecto aprobado y actualmente en ejecución.'],
+      desafio: ['Adaptar el diseño a las necesidades específicas de la clienta.', 'Aprovechar cada área sin afectar la circulación.', 'Seleccionar materiales y acabados acordes con el presupuesto y estilo deseado.'],
+      conclusion: 'Este proyecto representó una experiencia profesional real, fortaleciendo la comunicación con clientes y el desarrollo de soluciones funcionales que posteriormente fueron llevadas a la construcción.'
+    },
+    {
+      slug: 'tugo', img: 'assets/images/proyecto-tugo.png', cat: 'Comercial',
+      title: 'Ambientación Comercial – Tugó', sub: 'Visual merchandising y exhibición',
+      desc: 'Participación en la ambientación de espacios comerciales durante las prácticas profesionales en Tugó, aplicando principios de exhibición, organización y visual merchandising.',
+      resultado: ['Creación de ambientes comerciales atractivos.', 'Organización estratégica de productos.', 'Apoyo en el cumplimiento de estándares visuales de la marca.'],
+      desafio: ['Mantener la identidad visual de la empresa.', 'Adaptar constantemente las exhibiciones según inventario y campañas.', 'Trabajar bajo tiempos establecidos.'],
+      conclusion: 'La experiencia fortaleció conocimientos en ambientación comercial, trabajo en equipo y visual merchandising dentro de un entorno profesional.'
+    },
+    {
+      slug: 'independientes', img: 'assets/images/proyecto-independientes.png', cat: 'Residencial',
+      title: 'Proyectos Independientes', sub: 'Diseño interior para clientes particulares',
+      desc: 'Desarrollo de propuestas de diseño interior para clientes particulares, enfocadas en la funcionalidad, estética y personalización de los espacios.',
+      resultado: ['Elaboración de propuestas mediante modelado 3D y renders.', 'Soluciones adaptadas a las necesidades de cada cliente.', 'Aplicación práctica de conocimientos adquiridos durante la formación.'],
+      desafio: ['Comprender las expectativas del cliente.', 'Equilibrar diseño, funcionalidad y presupuesto.', 'Gestionar el desarrollo completo del proyecto de manera independiente.'],
+      conclusion: 'Los proyectos independientes permitieron consolidar habilidades técnicas y creativas, además de adquirir experiencia en la atención directa a clientes.'
+    }
+  ];
+
+  renderVals() {
+    const p = this.state.modal != null ? this.projects[this.state.modal] : null;
+    const gal = p ? this._gal(p) : [];
+    const cur = gal.length ? gal[Math.min(this.state.galIdx, gal.length - 1)] : null;
+    const sk = this.state.skill != null ? this.skills[this.state.skill] : null;
+    return {
+      isDark: this.state.isDark,
+      isLight: !this.state.isDark,
+      toggleTheme: () => {
+        // A completed hold (lantern) must not also flip the theme on release.
+        // Time-window instead of a sticky flag so a missed click can't jam it.
+        if (Date.now() - (this._holdThemeAt || 0) < 700) return;
+        this.setTheme(!this.state.isDark);
+      },
+      modalVisible: this.state.modal != null,
+      mImg: p ? p.img : '', mCat: p ? p.cat : '', mTitle: p ? p.title : '', mSub: p ? p.sub : '',
+      mDesc: p ? p.desc : '', mResultado: p ? p.resultado : [], mDesafio: p ? p.desafio : [],
+      mConclusion: p ? p.conclusion : '',
+      mGallery: gal.map((g, i) => ({
+        src: g.src,
+        esVisual: g.tipo !== 'video',
+        esVideo: g.tipo === 'video',
+        es360: g.tipo === '360',
+        borde: i === this.state.galIdx ? 'var(--acc)' : 'transparent',
+        opacidad: i === this.state.galIdx ? '1' : '.55',
+        etiqueta: (g.label ? g.label + ' · ' : '') + (g.tipo === '360' ? 'Vista 360°' : g.tipo === 'video' ? 'Video' : 'Imagen ' + (i + 1))
+      })),
+      mGalMulti: gal.length > 1,
+      mGalZones: gal.length > 1 && !!cur && cur.tipo === 'imagen',
+      mGalGyro: !!cur && cur.tipo === '360' && !!this._gyroCapable,
+      galGyro: (e) => {
+        const v = document.querySelector(this.state.big ? '[data-gal-big] visor-360' : '[data-gal-main] visor-360');
+        if (v && v._toggleGyro) v._toggleGyro(e.currentTarget);
+      },
+      mPrevOp: this.state.galFlash === 'prev' ? '1' : '0',
+      mNextOp: this.state.galFlash === 'next' ? '1' : '0',
+      galPrev: () => { this._galNav(-1); this._flashZone('prev'); },
+      galNext: () => { this._galNav(1); this._flashZone('next'); },
+      bigVisible: this.state.big,
+      openBig: () => this.setState({ big: true }),
+      closeBig: () => this.setState({ big: false }),
+      skillVisible: this.state.skill != null,
+      skName: sk ? sk.nombre : '',
+      skDesc: sk ? sk.desc : '',
+      openSkill: (e) => {
+        const el = e.currentTarget;
+        this.setState({ skill: Array.from(el.parentElement.children).indexOf(el) });
+      },
+      keyOpenSkill: (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const el = e.currentTarget;
+          this.setState({ skill: Array.from(el.parentElement.children).indexOf(el) });
+        }
+      },
+      closeSkill: () => this.setState({ skill: null }),
+      onSkillBackdrop: (e) => { if (e.target === e.currentTarget) this.setState({ skill: null }); },
+      selectGal: (e) => this.setState({ galIdx: +e.currentTarget.dataset.gi }),
+      bkAnim: this.state.closing ? 'bOut .28s ease forwards' : 'bIn .35s ease',
+      mAnim: this.state.closing ? 'mOut .28s ease forwards' : 'mIn .5s cubic-bezier(.2,.75,.25,1)',
+      openProj: (e) => this.openModal(+e.currentTarget.dataset.idx),
+      keyOpenProj: (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.openModal(+e.currentTarget.dataset.idx); }
+      },
+      closeModal: () => this.closeModal(),
+      onBackdrop: (e) => { if (e.target === e.currentTarget) this.closeModal(); },
+      backToTop: () => window.scrollTo({ top: 0, behavior: this.reducedMotion ? 'auto' : 'smooth' }),
+      musicAvailable: this.state.musicAvailable,
+      musicOn: this.state.musicOn,
+      musicOff: !this.state.musicOn,
+      musicAria: this.state.musicOn ? 'Silenciar la música ambiental' : 'Activar la música ambiental',
+      musicBg: this.state.musicOn ? 'var(--acc)' : 'var(--accSoft)',
+      musicColor: this.state.musicOn ? '#ffffff' : 'var(--accInk)',
+      toggleMusic: () => {
+        // A completed hold (sound panel) must not also toggle on release.
+        // Time-window instead of a sticky flag so a missed click can't jam it.
+        if (Date.now() - (this._holdMusicAt || 0) < 700) return;
+        this.setMusic(!this.state.musicOn); // ambient music ONLY
+      },
+      sndPanelOpen: this.state.sndPanel,
+      songToast: this.state.songToast,
+      songTitle: this.state.songTitle,
+      toastAnim: this.state.toastPhase === 'out' ? 'toastOut .55s cubic-bezier(.4,0,.7,.3) forwards' : 'toastIn .7s cubic-bezier(.2,.75,.25,1)',
+      vol: this.state.vol,
+      volPct: Math.round(this.state.vol * 100) + '%',
+      onVol: (e) => this._setVol(parseFloat(e.target.value)),
+      playing: this.state.musicOn,
+      playAria: this.state.musicOn ? 'Pausar música' : 'Reproducir música',
+      togglePlay: () => this.setMusic(!this.state.musicOn),
+      sndGalaxiaBorde: this.state.sndStyle === 'galaxia' ? 'var(--acc)' : 'var(--line)',
+      sndGalaxiaBg: this.state.sndStyle === 'galaxia' ? 'var(--accSoft)' : 'transparent',
+      sndLunarBorde: this.state.sndStyle === 'lunar' ? 'var(--acc)' : 'var(--line)',
+      sndLunarBg: this.state.sndStyle === 'lunar' ? 'var(--accSoft)' : 'transparent',
+      sndZeldaBorde: this.state.sndStyle === 'zelda' ? 'var(--acc)' : 'var(--line)',
+      sndZeldaBg: this.state.sndStyle === 'zelda' ? 'var(--accSoft)' : 'transparent',
+      setSndStyle: (e) => this._setSndStyle(e.currentTarget.dataset.estilo),
+      nextSong: () => this._nextSong(),
+      soundsOnV: this.state.soundsOn,
+      soundsOffV: !this.state.soundsOn,
+      soundsAria: this.state.soundsOn ? 'Silenciar sonidos interactivos' : 'Activar sonidos interactivos',
+      soundsBg: this.state.soundsOn ? 'var(--accSoft)' : 'transparent',
+      toggleSounds: () => this._setSounds(!this.state.soundsOn),
+      preLetras: this._preLetras.map((c, i) => ({
+        ch: c,
+        op: i < this.state.preN ? '1' : '0',
+        fil: i < this.state.preN ? 'blur(0px)' : 'blur(12px)',
+        tf: i < this.state.preN ? 'none' : 'translateY(12px) rotate(3deg) scale(1.15)'
+      })),
+      preTrazoOp: this.state.preN >= 17 ? '1' : '0',
+      preTrazoTf: this.state.preN >= 17 ? 'scaleX(1)' : 'scaleX(0)',
+      preSubOp: this.state.preN >= 18 ? '1' : '0',
+      preSubTf: this.state.preN >= 18 ? 'none' : 'translateY(14px)',
+      heroWords: this._heroWords.map((t, i) => ({
+        t,
+        op: i === this.state.heroIdx ? '1' : '0',
+        fil: i === this.state.heroIdx ? 'blur(0px)' : 'blur(8px)',
+        ty: i === this.state.heroIdx ? '0px' : '12px'
+      })),
+      nextBio: () => this.setState((s) => ({ bioIdx: (s.bioIdx + 1) % this._bioList.length })),
+      ctWords: ['increíble.', 'único.', 'memorable.', 'inolvidable.'].map((t, i) => ({
+        t,
+        op: i === this.state.heroIdx ? '1' : '0',
+        fil: i === this.state.heroIdx ? 'blur(0px)' : 'blur(7px)',
+        ty: i === this.state.heroIdx ? '0px' : '10px'
+      })),
+      briefPaso: Math.min(this.state.brief.paso, 3),
+      briefEnCurso: this.state.brief.paso <= 3,
+      briefP1: this.state.brief.paso === 1,
+      briefP2: this.state.brief.paso === 2,
+      briefP3: this.state.brief.paso === 3,
+      briefP4: this.state.brief.paso === 4,
+      briefEspacios: this._briefEspacios,
+      briefEstilos: this._briefEstilos,
+      briefTiempos: this._briefTiempos,
+      briefPickEspacio: (e) => this.setState({ brief: { ...this.state.brief, espacio: e.currentTarget.dataset.val, paso: 2 } }),
+      briefPickEstilo: (e) => this.setState({ brief: { ...this.state.brief, estilo: e.currentTarget.dataset.val, paso: 3 } }),
+      briefPickTiempo: (e) => this.setState({ brief: { ...this.state.brief, inicio: e.currentTarget.dataset.val, paso: 4 } }),
+      briefResumen: 'Espacio: ' + this.state.brief.espacio + ' · Estilo: ' + this.state.brief.estilo + ' · Inicio: ' + this.state.brief.inicio,
+      briefWa: 'https://wa.me/573017777049?text=' + encodeURIComponent('Hola Geraldine, completé el brief en tu portafolio.\n• Espacio: ' + this.state.brief.espacio + '\n• Estilo: ' + this.state.brief.estilo + '\n• Inicio: ' + this.state.brief.inicio + '\n¿Podemos hablar?'),
+      briefReset: () => this.setState({ brief: { paso: 1, espacio: '', estilo: '', inicio: '' } }),
+      lanternOn: this.state.lantern,
+      lanternToast: this.state.lanternToast,
+      visitasVisible: this.state.visitas != null,
+      visitasTxt: this.state.visitas != null ? this.state.visitas.toLocaleString('es-CO') : '',
+      bioFotos: this._bioList.map((src, i) => ({
+        dotOp: i === this.state.bioIdx ? '.95' : '.4'
+      })),
+      ...Object.fromEntries(this._bioList.map((src, i) => ['b' + (i + 1), {
+        op: i === this.state.bioIdx ? '1' : '0',
+        fil: i === this.state.bioIdx ? 'blur(0px)' : 'blur(10px)',
+        esc: i === this.state.bioIdx ? '1.06' : '1'
+      }]))
+    };
+  }
+
+  _ensureAudio() {
+    if (this._audio) return this._audio;
+    const a = new Audio();
+    a.loop = false; // playlist advances on its own
+    a.volume = 0;   // starts silent; setMusic fades it up to MAX_VOL
+    this._songIdx = this._drawSong();
+    a.src = this._playlist[this._songIdx].src;
+    a.addEventListener('error', () => { if (this.state.musicOn) this._nextSong(true); });
+    a.addEventListener('ended', () => { if (this.state.musicOn) this._nextSong(true); });
+    // Smooth handoff: ease the volume down over the last ~2.5 s of each track
+    a.addEventListener('timeupdate', () => {
+      if (!this.state.musicOn || !isFinite(a.duration) || !a.duration) return;
+      const rest = a.duration - a.currentTime;
+      if (rest < 2.5 && !this._endFade) { this._endFade = true; this._fadeTo(0.02, null, 2200); }
+    });
+    this._audio = a;
+    return a;
+  }
+
+  // Smoothly ramps the audio volume over durMs; runs done() at the end
+  _fadeTo(target, done, durMs = 1200) {
+    const a = this._audio;
+    if (!a) return;
+    if (this._fadeTimer) { clearInterval(this._fadeTimer); this._fadeTimer = null; }
+    const step = Math.max(0.004, Math.abs(target - a.volume) / Math.max(1, durMs / 45));
+    this._fadeTimer = setInterval(() => {
+      const diff = target - a.volume;
+      if (Math.abs(diff) <= step) {
+        a.volume = target;
+        clearInterval(this._fadeTimer); this._fadeTimer = null;
+        if (done) done();
+        return;
+      }
+      a.volume = Math.min(1, Math.max(0, a.volume + Math.sign(diff) * step));
+    }, 45);
+  }
+
+  // Live ambient-volume control (also the ceiling for fades)
+  _setVol(v) {
+    v = Math.min(1, Math.max(0, v));
+    this.setState({ vol: v });
+    try { localStorage.setItem('go-vol', String(v)); } catch (e) {}
+    const a = this._audio;
+    if (a && this.state.musicOn && !this._endFade) {
+      if (this._fadeTimer) { clearInterval(this._fadeTimer); this._fadeTimer = null; }
+      a.volume = v;
+    }
+  }
+
+  _setSounds(on, persist = true) {
+    this.setState({ soundsOn: on });
+    if (window.SonidosUI) window.SonidosUI.enabled = on;
+    if (persist) { try { localStorage.setItem('go-sonidos', on ? 'on' : 'off'); } catch (e) {} }
+  }
+
+  _setSndStyle(name, persist = true) {
+    this.setState({ sndStyle: name });
+    if (window.SonidosUI) window.SonidosUI.setVariante(name);
+    try { localStorage.setItem('go-snd-estilo', name); } catch (e) {}
+    // Audible preview of the chosen palette
+    setTimeout(() => this._snd('open'), 60);
+  }
+
+  // Advances to the next bag track; auto=true when a song ends by itself
+  _nextSong(auto = false) {
+    const a = this._ensureAudio();
+    const go = () => {
+      this._endFade = false;
+      this._songIdx = this._drawSong();
+      const s = this._playlist[this._songIdx];
+      a.src = s.src;
+      if (this.state.musicOn) {
+        a.volume = 0;
+        a.play().then(() => this._fadeTo(this._MAX_VOL, null, 2000)).catch(() => { this._pendingPlay = true; });
+        this._announceSong(s.titulo);
+      }
+    };
+    if (!auto && this.state.musicOn && !a.paused) this._fadeTo(0, go, 600);
+    else go();
+    if (!auto) this._snd('tick', 1);
+  }
+
+  setMusic(on, persist = true) {
+    const MAX_VOL = this._MAX_VOL;
+    this.setState({ musicOn: on });
+    if (persist) { try { localStorage.setItem('go-musica', on ? 'on' : 'off'); } catch (e) {} }
+    const a = this._ensureAudio();
+    this._pendingPlay = false;
+    if (on) {
+      if (a.paused) a.volume = 0;
+      // First-ever ramp is a slow 5 s welcome; later toggles are quicker
+      const dur = this._firstFadeDone ? 1200 : 5000;
+      a.play().then(() => {
+        this._firstFadeDone = true;
+        this._fadeTo(MAX_VOL, null, dur);
+        this._announceSong(this._playlist[this._songIdx].titulo);
+      }).catch(() => { this._pendingPlay = true; });
+    } else {
+      // Hard-stop guarantee: fade down, then pause; if a play() promise resolves
+      // late and restarts it, the guard pauses it again.
+      this._pendingPlay = false;
+      this._fadeTo(0, () => { a.pause(); a.volume = 0; });
+      setTimeout(() => { if (!this.state.musicOn && !a.paused) { a.pause(); a.volume = 0; } }, 1600);
+    }
+  }
+
+  // Lantern mode: dark spotlight that follows the pointer (double-click the theme button)
+  _toggleLantern() {
+    const on = !this.state.lantern;
+    if (on) this._snd('lantern');
+    if (on && !this.state.isDark) this.setTheme(true);
+    this.setState({ lantern: on, lanternToast: on });
+    if (this._lanternT) clearTimeout(this._lanternT);
+    if (!on) return;
+    this._lanternT = setTimeout(() => this.setState({ lanternToast: false }), 4200);
+    // Iris-in: the darkness closes around the light for a clear "activated" cue
+    const x = this._px != null ? this._px : window.innerWidth / 2;
+    const y = this._py != null ? this._py : 90;
+    const start = performance.now();
+    const grow = (now) => {
+      if (!this.state.lantern) return;
+      const el = document.querySelector('[data-lantern]');
+      const t = Math.min(1, (now - start) / 900);
+      const ease = 1 - Math.pow(1 - t, 3);
+      const rad = Math.round(1400 - (1400 - 300) * ease);
+      if (el) el.style.background = 'radial-gradient(circle ' + rad + 'px at ' + x + 'px ' + y + 'px, transparent 0%, rgba(2,1,8,.9) 74%)';
+      if (t < 1) requestAnimationFrame(grow);
+    };
+    requestAnimationFrame(grow);
+  }
+
+  // Safe accessor for the UI sound engine (may not be loaded yet)
+  _snd(fn, ...args) {
+    const s = window.SonidosUI;
+    if (s && typeof s[fn] === 'function') { try { s[fn](...args); } catch (e) {} }
+  }
+
+  setTheme(dark, persist = true) {
+    this._snd('theme', dark);
+    this.setState({ isDark: dark });
+    document.body.classList.toggle('dark', dark);
+    if (persist) { try { localStorage.setItem('go-theme', dark ? 'oscuro' : 'claro'); } catch (e) {} }
+  }
+
+  // Gallery for a project
+  _gal(p) {
+    if (!this._gals) this._gals = this._buildGals();
+    return this._gals[p.slug] || [{ tipo: 'imagen', src: p.img }];
+  }
+
+  // Briefly shows the pressed nav zone (declarative, so re-renders can't cancel it)
+  _flashZone(dir) {
+    this.setState({ galFlash: dir });
+    clearTimeout(this._zoneT);
+    this._zoneT = setTimeout(() => this.setState({ galFlash: null }), 750);
+  }
+
+  // Cycles the gallery with wrap-around
+  _galNav(dir) {
+    const p = this.state.modal != null ? this.projects[this.state.modal] : null;
+    if (!p) return;
+    this._snd('tick', dir);
+    const n = this._gal(p).length;
+    this.setState((s) => ({ galIdx: (s.galIdx + dir + n) % n }));
+  }
+
+  // Mounts the active gallery item into the modal header (and the big view when open)
+  _renderGalMain() {
+    this._renderGalInto('[data-gal-main]', false);
+    if (this.state.big) this._renderGalInto('[data-gal-big]', true);
+  }
+
+  _renderGalInto(sel, grande) {
+    const holder = document.querySelector(sel);
+    if (!holder || this.state.modal == null) return;
+    const gal = this._gal(this.projects[this.state.modal]);
+    const item = gal[Math.min(this.state.galIdx, gal.length - 1)];
+    const key = item.tipo + '|' + item.src;
+    if (holder.dataset.cur === key) return;
+    holder.dataset.cur = key;
+    holder.innerHTML = '';
+    if (item.tipo === 'imagen') {
+      const img = document.createElement('img');
+      img.src = item.src;
+      img.alt = this.projects[this.state.modal].title;
+      img.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:' + (grande ? 'contain' : 'cover') + ';opacity:0;filter:blur(16px) brightness(1.3);transform:scale(1.035);transition:opacity .55s ease,filter .8s ease,transform .9s ease';
+      img.onload = () => { img.style.opacity = '1'; img.style.filter = 'blur(0) brightness(1)'; img.style.transform = 'scale(1)'; };
+      holder.appendChild(img);
+    } else if (item.tipo === 'video') {
+      // Local file if present; otherwise Drive's embedded player (streams without CORS)
+      const mountLocal = () => {
+        const v = document.createElement('video');
+        v.src = item.src;
+        v.muted = true; v.loop = true; v.autoplay = true; v.playsInline = true; v.controls = true;
+        v.setAttribute('playsinline', '');
+        v.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#0e0b16';
+        holder.appendChild(v);
+        v.play().catch(() => {});
+      };
+      const mountDrive = () => {
+        const f = document.createElement('iframe');
+        f.src = 'https://drive.google.com/file/d/' + item.driveId + '/preview';
+        f.setAttribute('allow', 'autoplay; fullscreen');
+        f.setAttribute('title', 'Video del proyecto');
+        f.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;border:0;background:#0e0b16';
+        holder.appendChild(f);
+      };
+      fetch(item.src, { method: 'HEAD' }).then((r) => {
+        if (holder.dataset.cur !== key || !holder.isConnected) return;
+        if (r.ok) mountLocal(); else if (item.driveId) mountDrive();
+      }).catch(() => {
+        if (holder.dataset.cur === key && holder.isConnected && item.driveId) mountDrive();
+      });
+    } else {
+      // 360° panorama — lazy-load the WebGL viewer module
+      import('./assets/js/visor360.js').then(() => {
+        if (holder.dataset.cur !== key || !holder.isConnected) return;
+        const pv = document.createElement('visor-360');
+        pv.setAttribute('no-gyro-btn', '');
+        pv.setAttribute('src', item.src);
+        pv.style.cssText = 'position:absolute;inset:0';
+        holder.appendChild(pv);
+      });
+    }
+  }
+
+  componentDidUpdate() {
+    this._renderGalMain();
+    // Mount the skill icon imperatively (a template {{ }} src would fetch unresolved on first paint)
+    const ih = document.querySelector('[data-skill-icon]');
+    if (ih && this.state.skill != null) {
+      const src = this.skills[this.state.skill].icon;
+      if (ih.dataset.cur !== src) {
+        ih.dataset.cur = src;
+        ih.innerHTML = '';
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = '';
+        img.style.cssText = 'width:100%;height:100%;object-fit:contain';
+        ih.appendChild(img);
+      }
+    }
+  }
+
+  openModal(idx) {
+    this._snd('open');
+    this.setState({ modal: idx, closing: false, galIdx: 0 });
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => { const b = document.querySelector('[data-modal-close]'); if (b) b.focus(); }, 80);
+  }
+
+  closeModal() {
+    if (this.state.modal == null || this.state.closing) return;
+    this._snd('close');
+    if (this.reducedMotion) {
+      this.setState({ modal: null, closing: false, big: false });
+      document.body.style.overflow = '';
+      return;
+    }
+    this.setState({ closing: true });
+    setTimeout(() => {
+      this.setState({ modal: null, closing: false, big: false });
+      document.body.style.overflow = '';
+    }, 270);
+  }
+
+  componentDidMount() {
+    this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this._gyroCapable = typeof DeviceOrientationEvent !== 'undefined' && ('ontouchstart' in window || typeof DeviceOrientationEvent.requestPermission === 'function');
+    this._cleanup = [];
+
+    // ---- Theme: saved preference > prop > light ----
+    let saved = null;
+    try { saved = localStorage.getItem('go-theme'); } catch (e) {}
+    const initial = saved || this.props.temaInicial || 'claro';
+    if (initial === 'oscuro') this.setTheme(true, false);
+
+    // ---- Accent color prop ----
+    if (this.props.acento) document.body.style.setProperty('--acc', this.props.acento);
+
+    // ---- Hero video (graceful fallback to poster image if file missing) ----
+    const holder = document.querySelector('[data-video-holder]');
+    if (holder && !holder.querySelector('video')) {
+      const candidatos = [this.props.videoReel ?? 'assets/videos/reel.mp4', 'assets/videos/Geral_Productions.mp4'];
+      (async () => {
+        for (const src of candidatos) {
+          try {
+            const res = await fetch(src, { method: 'HEAD' });
+            if (res.ok) {
+              if (holder.isConnected && !holder.querySelector('video')) this._mountVideo(holder, src);
+              return;
+            }
+          } catch (e) {}
+        }
+        // No local video yet: the poster image stays (no broken requests)
+      })();
+    }
+
+    // ---- Background music: only offered when the local file exists ----
+    try {
+      const sv = parseFloat(localStorage.getItem('go-vol'));
+      if (!isNaN(sv)) this.setState({ vol: Math.min(1, Math.max(0, sv)) });
+    } catch (e) {}
+    this._loadPlaylist().then(() => {
+      return fetch(this._playlist[0].src, { method: 'HEAD' });
+    }).then((r) => {
+      if (!r || !r.ok) return;
+      this.setState({ musicAvailable: true });
+      let musicSaved = null;
+      try { musicSaved = localStorage.getItem('go-musica'); } catch (e) {}
+      if (musicSaved !== 'off') this.setMusic(true, false);
+    }).catch(() => {});
+
+    // ---- Restore sound prefs (UI sounds + palette) ----
+    try {
+      const s = localStorage.getItem('go-sonidos');
+      if (s === 'off') this._setSounds(false, false);
+      const est = localStorage.getItem('go-snd-estilo');
+      if (est) this.setState({ sndStyle: est });
+    } catch (e) {}
+    const gesture = () => {
+      if (this._pendingPlay && this.state.musicOn && this._audio) {
+        this._pendingPlay = false;
+        this._audio.volume = 0;
+        const dur = this._firstFadeDone ? 1200 : 5000;
+        this._audio.play().then(() => {
+          this._firstFadeDone = true;
+          this._fadeTo(this._MAX_VOL, null, dur);
+          this._announceSong(this._playlist[this._songIdx].titulo);
+        }).catch(() => {});
+      }
+    };
+    document.addEventListener('pointerdown', gesture);
+    document.addEventListener('keydown', gesture);
+    this._cleanup.push(() => { document.removeEventListener('pointerdown', gesture); document.removeEventListener('keydown', gesture); });
+
+    // ---- Visit counter (free counter API; hidden if unreachable) ----
+    (async () => {
+      let counted = false;
+      try { counted = sessionStorage.getItem('go-visita') === '1'; } catch (e) {}
+      const base = 'https://abacus.jasoncameron.dev/';
+      try {
+        const r = await fetch(base + (counted ? 'get' : 'hit') + '/portafolio-geraldine-olivar/visitas');
+        const d = await r.json();
+        if (d && typeof d.value === 'number') {
+          this.setState({ visitas: d.value });
+          try { sessionStorage.setItem('go-visita', '1'); } catch (e) {}
+        }
+      } catch (e) {}
+    })();
+
+    // ---- Bio photo carousel ----
+    if (!this.reducedMotion) {
+      const t = setInterval(() => this.setState((s) => ({ bioIdx: (s.bioIdx + 1) % this._bioList.length })), 4800);
+      this._cleanup.push(() => clearInterval(t));
+    }
+
+    // ---- Preloader: state-driven letter reveal (immune to re-renders), timed exit ----
+    {
+      const pre = document.querySelector('[data-preloader]');
+      if (pre) {
+        const short = this.reducedMotion;
+        const iv = setInterval(() => {
+          this.setState((s) => {
+            const n = s.preN + 1;
+            if (n >= 18) clearInterval(iv);
+            return { preN: n };
+          });
+        }, short ? 15 : 150);
+        const t1 = setTimeout(() => { pre.style.animation = 'preOut .65s cubic-bezier(.45,0,.25,1) forwards'; }, short ? 1400 : 4200);
+        const t2 = setTimeout(() => { pre.style.display = 'none'; }, short ? 1900 : 4900);
+        this._cleanup.push(() => { clearInterval(iv); clearTimeout(t1); clearTimeout(t2); pre.style.display = 'none'; });
+      }
+    }
+
+    // ---- Hero rotating word ----
+    if (!this.reducedMotion) {
+      const t = setInterval(() => this.setState((s) => ({ heroIdx: (s.heroIdx + 1) % this._heroWords.length })), 4200);
+      this._cleanup.push(() => clearInterval(t));
+    }
+
+    this._initInteractions();
+  }
+
+  // Appends the hero <video> only once the file is confirmed to exist
+  _mountVideo(holder, src) {
+    {
+      const v = document.createElement('video');
+      v.src = src;
+      v.muted = true; v.defaultMuted = true; v.volume = 0; v.loop = true; v.autoplay = true; v.playsInline = true;
+      v.setAttribute('muted', ''); v.setAttribute('playsinline', ''); v.setAttribute('aria-hidden', 'true');
+      // The banner must NEVER emit sound — re-mute if anything unmutes it
+      v.addEventListener('volumechange', () => { if (!v.muted || v.volume > 0) { v.muted = true; v.volume = 0; } });
+      v.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .9s ease';
+      v.addEventListener('error', () => v.remove());
+      v.addEventListener('loadeddata', () => { v.style.opacity = '1'; });
+      holder.appendChild(v);
+      v.play().catch(() => {});
+    }
+  }
+
+  // Nav behavior, scroll reveals, glow, ripple, magnetic buttons, keyboard
+  _initInteractions() {
+    // ---- Scroll: hide/show nav + active section highlight ----
+    const wrap = document.querySelector('[data-nav-wrap]');
+    let lastY = window.scrollY;
+    const secs = Array.from(document.querySelectorAll('[data-sec]'));
+    const items = Array.from(document.querySelectorAll('[data-nav]'));
+
+    // ---- Nav ribbon: fade the edge only where more items remain hidden ----
+    const navEl = document.querySelector('[data-navscroll]');
+    const updateMask = () => {
+      if (!navEl) return;
+      const max = navEl.scrollWidth - navEl.clientWidth;
+      const l = navEl.scrollLeft > 6;
+      const r = navEl.scrollLeft < max - 6;
+      let mask = '';
+      if (l && r) mask = 'linear-gradient(to right, transparent 0, #000 34px, #000 calc(100% - 34px), transparent 100%)';
+      else if (l) mask = 'linear-gradient(to right, transparent 0, #000 34px)';
+      else if (r) mask = 'linear-gradient(to right, #000 calc(100% - 34px), transparent 100%)';
+      navEl.style.maskImage = mask;
+      navEl.style.webkitMaskImage = mask;
+    };
+    if (navEl) {
+      navEl.addEventListener('scroll', updateMask, { passive: true });
+      window.addEventListener('resize', updateMask);
+      this._cleanup.push(() => { navEl.removeEventListener('scroll', updateMask); window.removeEventListener('resize', updateMask); });
+      updateMask();
+    }
+
+    const setActive = (id) => {
+      // Keep the active item centered in the scrollable ribbon (mobile)
+      if (navEl && id !== this._lastNav) {
+        this._lastNav = id;
+        if (navEl.scrollWidth > navEl.clientWidth + 4) {
+          const act = items.find((x) => x.dataset.nav === id);
+          if (act) {
+            const left = act.getBoundingClientRect().left - navEl.getBoundingClientRect().left + navEl.scrollLeft;
+            navEl.scrollTo({ left: left - navEl.clientWidth / 2 + act.offsetWidth / 2, behavior: this.reducedMotion ? 'auto' : 'smooth' });
+          }
+        }
+      }
+      items.forEach((it) => {
+        const on = it.dataset.nav === id;
+        it.style.color = on ? 'var(--accInk)' : 'var(--text2)';
+        it.style.background = on ? 'var(--accSoft)' : 'transparent';
+        const u = it.querySelector('[data-underline]');
+        if (u) u.style.transform = on ? 'scaleX(1)' : 'scaleX(0)';
+      });
+    };
+    const onScroll = () => {
+      lastY = window.scrollY;
+      let cur = 'inicio';
+      for (const s of secs) { if (s.getBoundingClientRect().top <= 190) cur = s.dataset.sec; }
+      setActive(cur);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    this._cleanup.push(() => window.removeEventListener('scroll', onScroll));
+    onScroll();
+    // Recompute whenever the page height changes (images/fonts settle after load)
+    if ('ResizeObserver' in window) {
+      const ro = new ResizeObserver(() => onScroll());
+      ro.observe(document.body);
+      this._cleanup.push(() => ro.disconnect());
+    }
+    const tSettles = [400, 1500, 3500, 5500].map((ms) => setTimeout(onScroll, ms));
+    this._cleanup.push(() => tSettles.forEach(clearTimeout));
+
+    // ---- Reveal on scroll (replays every time a section re-enters the viewport) ----
+    if (!this.reducedMotion && 'IntersectionObserver' in window) {
+      const els = Array.from(document.querySelectorAll('[data-reveal], [data-glow]'));
+      const isTarget = (n) => n.hasAttribute && (n.hasAttribute('data-reveal') || n.hasAttribute('data-glow'));
+      const hide = (el, animate) => {
+        el.style.transition = animate ? 'opacity .5s ease, transform .5s ease, filter .5s ease' : 'none';
+        el.style.transitionDelay = '0ms';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(28px)';
+        el.style.filter = 'blur(7px)';
+      };
+      const show = (el) => {
+        // Stagger siblings (cards in a grid) for a cascading entrance
+        const sibs = el.parentElement ? Array.from(el.parentElement.children).filter(isTarget) : [];
+        const idx = Math.max(0, sibs.indexOf(el));
+        el.style.transition = 'opacity .85s ease, transform .85s cubic-bezier(.2,.75,.2,1), filter .85s ease';
+        el.style.transitionDelay = Math.min(idx, 7) * 70 + 'ms';
+        requestAnimationFrame(() => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; el.style.filter = 'blur(0)'; });
+      };
+      // Initially hide only what's below the fold (no flash for visible content)
+      els.forEach((el) => { if (el.getBoundingClientRect().top > window.innerHeight * 0.9) hide(el, false); });
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((en) => {
+          const el = en.target;
+          if (en.isIntersecting) { show(el); return; }
+          // Fully out of view: reset so the reveal replays on re-entry
+          const r = el.getBoundingClientRect();
+          if (r.bottom < 0 || r.top > window.innerHeight) hide(el, false);
+        });
+      }, { threshold: 0.12 });
+      els.forEach((el) => io.observe(el));
+      this._cleanup.push(() => io.disconnect());
+    }
+
+    // ---- Mouse-follow glow on cards ----
+    if (!this.reducedMotion) {
+      const applyGlow = (cx, cy, target) => {
+        // Lantern spotlight follows the pointer
+        if (this.state.lantern && cx > -999) {
+          const lt = document.querySelector('[data-lantern]');
+          if (lt) lt.style.background = 'radial-gradient(circle 300px at ' + cx + 'px ' + cy + 'px, transparent 0%, rgba(2,1,8,.9) 74%)';
+        }
+        const card = target && target.closest ? target.closest('[data-glow]') : null;
+        document.querySelectorAll('[data-glow]').forEach((c) => {
+          if (c === card) return;
+          // Ancestor cards keep their glow/tilt while the pointer is on an inner button
+          if (card && c.contains(card)) return;
+          const l = c.querySelector(':scope > [data-glowlayer]');
+          if (l) l.style.opacity = '0';
+          const rm = c.querySelector(':scope > [data-rim]');
+          if (rm) rm.style.opacity = '0';
+          if (c.dataset.tilted) {
+            c.style.transform = '';
+            c.style.transition = c.dataset.otr || '';
+            delete c.dataset.tilted;
+          }
+        });
+        if (!card) return;
+        const r = card.getBoundingClientRect();
+        const layer = card.querySelector(':scope > [data-glowlayer]');
+        if (layer) {
+          layer.style.opacity = '1';
+          layer.style.background = 'radial-gradient(320px circle at ' + (cx - r.left) + 'px ' + (cy - r.top) + 'px, var(--glow), transparent 65%)';
+        }
+        // Liquid-glass rim: an illuminated border ring that follows the pointer
+        let rim = card.querySelector(':scope > [data-rim]');
+        if (!rim) {
+          rim = document.createElement('div');
+          rim.setAttribute('data-rim', '');
+          rim.style.cssText = 'position:absolute;inset:0;border-radius:inherit;padding:1.5px;pointer-events:none;opacity:0;transition:opacity .45s ease;z-index:3;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude';
+          card.appendChild(rim);
+        }
+        rim.style.opacity = '1';
+        rim.style.background = 'radial-gradient(300px circle at ' + (cx - r.left) + 'px ' + (cy - r.top) + 'px, rgba(255,255,255,.95), color-mix(in srgb, var(--acc) 65%, transparent) 38%, transparent 72%)';
+        // Subtle 3D tilt following the pointer (skipped on magnetic buttons — they move instead)
+        if (card.hasAttribute('data-magnetic')) return;
+        const px = (cx - r.left) / r.width - 0.5;
+        const py = (cy - r.top) / r.height - 0.5;
+        if (!card.dataset.tilted) {
+          card.dataset.otr = card.style.transition || '';
+          card.dataset.tilted = '1';
+          card.style.transition = 'transform .18s ease-out, box-shadow .45s ease, border-color .4s ease, background .6s ease';
+        }
+        card.style.transform = 'perspective(900px) rotateX(' + (-py * 6).toFixed(2) + 'deg) rotateY(' + (px * 8).toFixed(2) + 'deg) translateY(-4px)';
+      };
+      const move = (ev) => {
+        this._px = ev.clientX; this._py = ev.clientY;
+        applyGlow(ev.clientX, ev.clientY, ev.target);
+      };
+      const resetGlow = () => applyGlow(-9999, -9999, null);
+      // Scrolling shifts cards under a stationary pointer: recompute against the new hit target
+      const onGlowScroll = () => {
+        if (this._px == null) return;
+        applyGlow(this._px, this._py, document.elementFromPoint(this._px, this._py));
+      };
+      // On touch there is no hover: release the glow shortly after the finger lifts
+      const onUp = (ev) => { if (ev.pointerType === 'touch') setTimeout(resetGlow, 650); };
+      // Fast exits can skip pointermove: pointerout with no relatedTarget = cursor left the page
+      const onOut = (ev) => {
+        if (!ev.relatedTarget) { this._px = null; this._py = null; resetGlow(); }
+      };
+      window.addEventListener('blur', resetGlow);
+      document.addEventListener('pointerout', onOut);
+      this._cleanup.push(() => { window.removeEventListener('blur', resetGlow); document.removeEventListener('pointerout', onOut); });
+      document.addEventListener('pointermove', move, { passive: true });
+      window.addEventListener('scroll', onGlowScroll, { passive: true });
+      document.documentElement.addEventListener('mouseleave', resetGlow);
+      document.addEventListener('pointerup', onUp);
+      this._cleanup.push(() => {
+        document.removeEventListener('pointermove', move);
+        window.removeEventListener('scroll', onGlowScroll);
+        document.documentElement.removeEventListener('mouseleave', resetGlow);
+        document.removeEventListener('pointerup', onUp);
+      });
+    }
+
+    // ---- Click ripple ----
+    const ripple = (e) => {
+      // Crystal pluck on real interactive targets
+      if (e.target.closest && e.target.closest('[data-ripple], a, button')) this._snd('click');
+      if (this.reducedMotion) return;
+      // Page-wide soft light ripple on every click
+      if (e.clientX || e.clientY) {
+        const pr = document.createElement('div');
+        pr.style.cssText = 'position:fixed;left:' + (e.clientX - 280) + 'px;top:' + (e.clientY - 280) + 'px;width:560px;height:560px;border-radius:50%;pointer-events:none;z-index:94;background:radial-gradient(circle, var(--glow) 0%, transparent 58%);animation:pageRipple .9s ease-out forwards';
+        document.body.appendChild(pr);
+        setTimeout(() => pr.remove(), 950);
+      }
+      const t = e.target.closest && e.target.closest('[data-ripple]');
+      if (!t) return;
+      const r = t.getBoundingClientRect();
+      if (getComputedStyle(t).position === 'static') t.style.position = 'relative';
+      t.style.overflow = 'hidden';
+      const s = document.createElement('span');
+      const size = Math.max(r.width, r.height) * 1.1;
+      s.style.cssText = 'position:absolute;border-radius:50%;pointer-events:none;background:var(--acc);width:' + size + 'px;height:' + size + 'px;left:' + (e.clientX - r.left - size / 2) + 'px;top:' + (e.clientY - r.top - size / 2) + 'px;animation:rippleFx .65s ease-out forwards';
+      t.appendChild(s);
+      setTimeout(() => s.remove(), 700);
+    };
+    document.addEventListener('click', ripple);
+    this._cleanup.push(() => document.removeEventListener('click', ripple));
+
+    // ---- Magnetic buttons ----
+    if (!this.reducedMotion) {
+      const mag = (e) => {
+        document.querySelectorAll('[data-magnetic]').forEach((el) => {
+          const r = el.getBoundingClientRect();
+          const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+          const dx = e.clientX - cx, dy = e.clientY - cy;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 110) {
+            const f = (1 - dist / 110) * 0.28;
+            el.style.transform = 'translate(' + dx * f + 'px,' + dy * f + 'px)';
+          } else if (el.style.transform) {
+            el.style.transform = '';
+          }
+        });
+      };
+      document.addEventListener('pointermove', mag, { passive: true });
+      this._cleanup.push(() => document.removeEventListener('pointermove', mag));
+    }
+
+    // ---- Lunar UI sounds: load engine + hover shimmer on cards ----
+    const sndScript = document.createElement('script');
+    sndScript.src = 'assets/js/sonidos.js';
+    sndScript.onload = () => {
+      if (!window.SonidosUI) return;
+      window.SonidosUI.setVariante(this.state.sndStyle || this.props.estiloSonido || 'galaxia');
+      window.SonidosUI.enabled = this.state.soundsOn;
+    };
+    document.head.appendChild(sndScript);
+    const hoverSnd = (e) => {
+      const t = e.target;
+      if (!t || !t.closest) return;
+      const card = t.closest('[data-glow], [data-nav]');
+      if (!card) return;
+      // Only fire when ENTERING the card (not moving between its children)
+      if (e.relatedTarget && card.contains(e.relatedTarget)) return;
+      this._snd('hover');
+    };
+    document.addEventListener('pointerover', hoverSnd, { passive: true });
+    this._cleanup.push(() => document.removeEventListener('pointerover', hoverSnd));
+
+    // ---- Lantern: press & hold the theme button for 2 s ----
+    const tbtn = document.querySelector('[data-theme-btn]');
+    if (tbtn) {
+      let holdT = null;
+      const cancel = () => {
+        if (holdT) { clearTimeout(holdT); holdT = null; }
+        tbtn.style.animation = '';
+      };
+      tbtn.addEventListener('pointerdown', () => {
+        cancel();
+        tbtn.style.animation = 'holdPulse 2s ease-in forwards';
+        holdT = setTimeout(() => {
+          holdT = null;
+          tbtn.style.animation = '';
+          this._holdThemeAt = Date.now();
+          this._toggleLantern();
+        }, 2000);
+      });
+      tbtn.addEventListener('pointerup', cancel);
+      tbtn.addEventListener('pointerleave', cancel);
+      tbtn.addEventListener('pointercancel', cancel);
+      tbtn.addEventListener('contextmenu', (e) => e.preventDefault());
+      this._cleanup.push(cancel);
+    }
+
+    // ---- Sound panel: press & hold the music button for 2 s ----
+    // Delegated on document: the button mounts LATER (inside sc-if musicAvailable)
+    // and its subtree re-renders, so direct bindings would be lost.
+    let mHoldT = null, mHeldBtn = null;
+    const mCancel = () => {
+      if (mHoldT) { clearTimeout(mHoldT); mHoldT = null; }
+      if (mHeldBtn) { mHeldBtn.style.animation = ''; mHeldBtn = null; }
+    };
+    const mDown = (e) => {
+      // Also handles click-outside close for the panel
+      if (this.state.sndPanel && e.target.closest && !e.target.closest('[data-snd-panel]') && !e.target.closest('[data-music-btn]')) {
+        this.setState({ sndPanel: false });
+      }
+      const btn = e.target.closest && e.target.closest('[data-music-btn]');
+      if (!btn) return;
+      mCancel();
+      mHeldBtn = btn;
+      btn.style.animation = 'holdPulse 1s ease-in forwards';
+      mHoldT = setTimeout(() => {
+        mHoldT = null;
+        if (mHeldBtn) mHeldBtn.style.animation = '';
+        mHeldBtn = null;
+        this._holdMusicAt = Date.now();
+        this.setState({ sndPanel: true });
+      }, 1000);
+    };
+    const mLeave = (e) => {
+      // Cancel only when the pointer truly exits the button (not moving between its children)
+      if (mHeldBtn && mHeldBtn.contains(e.target) && !(e.relatedTarget && mHeldBtn.contains(e.relatedTarget))) mCancel();
+    };
+    // Hover-to-open (fine pointers): cursor resting on the button 1 s opens the panel
+    let hoverT = null;
+    const mOver = (e) => {
+      if (e.pointerType === 'touch') return;
+      const btn = e.target.closest && e.target.closest('[data-music-btn]');
+      if (!btn || (e.relatedTarget && btn.contains(e.relatedTarget))) return;
+      clearTimeout(hoverT);
+      hoverT = setTimeout(() => this.setState({ sndPanel: true }), 1000);
+    };
+    const mOut = (e) => {
+      const btn = e.target.closest && e.target.closest('[data-music-btn]');
+      if (btn && !(e.relatedTarget && btn.contains(e.relatedTarget))) clearTimeout(hoverT);
+    };
+    document.addEventListener('pointerdown', mDown);
+    document.addEventListener('pointerup', mCancel);
+    document.addEventListener('pointercancel', mCancel);
+    document.addEventListener('pointerout', mLeave, true);
+    document.addEventListener('pointerover', mOver, true);
+    document.addEventListener('pointerout', mOut, true);
+    this._cleanup.push(() => {
+      mCancel();
+      clearTimeout(hoverT);
+      document.removeEventListener('pointerdown', mDown);
+      document.removeEventListener('pointerup', mCancel);
+      document.removeEventListener('pointercancel', mCancel);
+      document.removeEventListener('pointerout', mLeave, true);
+      document.removeEventListener('pointerover', mOver, true);
+      document.removeEventListener('pointerout', mOut, true);
+    });
+
+    // ---- Escape closes modal ----
+    const onKey = (e) => {
+      if (e.key !== 'Escape') return;
+      if (this.state.big) { this.setState({ big: false }); return; }
+      if (this.state.skill != null) { this.setState({ skill: null }); return; }
+      this.closeModal();
+    };
+    document.addEventListener('keydown', onKey);
+    this._cleanup.push(() => document.removeEventListener('keydown', onKey));
+  }
+
+  componentWillUnmount() {
+    (this._cleanup || []).forEach((fn) => fn());
+    if (this._fadeTimer) clearInterval(this._fadeTimer);
+    if (this._lanternT) clearTimeout(this._lanternT);
+    if (this._zoneT) clearTimeout(this._zoneT);
+    if (this._songToastT) clearTimeout(this._songToastT);
+    if (this._songToastT2) clearTimeout(this._songToastT2);
+    if (this._audio) { this._audio.pause(); this._audio = null; }
+    document.body.style.overflow = '';
+  }
+}
+</script>
+</body>
+</html>
